@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Session","Update aware session store"]],"trait":[["SessionStore","Methods for accessing a store"]]});

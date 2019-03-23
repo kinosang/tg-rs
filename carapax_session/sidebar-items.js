@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["session_handler","Creates a new session handler"]],"mod":[["store","Contains session store implementations"]],"struct":[["SessionNamespace","A session namespace"]]});

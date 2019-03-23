@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RateLimitKey","Rate limit key"]],"macro":[["nonzero","Create non-zero values from constant literals easily."]],"struct":[["RateLimitHandler","Limits number of updates per time"]]});

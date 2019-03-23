@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Proxy","A SOCKS4/5 proxy information and TCP connector"]],"struct":[["Auth","An authentication information"],["Connection","A future with ready TCP stream"],["Error","An error returned from the TLS implementation."],["HttpsConnector","A Connector for the `https` scheme."]]});
