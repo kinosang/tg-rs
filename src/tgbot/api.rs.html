@@ -146,10 +146,10 @@
     <span class="doccomment">/// Sets a proxy to config</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Proxy format:</span>
-    <span class="doccomment">/// * http://[user:password]host:port</span>
-    <span class="doccomment">/// * https://[user:password]@host:port</span>
+    <span class="doccomment">/// * http://\[user:password\]@host:port</span>
+    <span class="doccomment">/// * https://\[user:password\]@host:port</span>
     <span class="doccomment">/// * socks4://userid@host:port</span>
-    <span class="doccomment">/// * socks5://[user:password]@host:port</span>
+    <span class="doccomment">/// * socks5://\[user:password\]@host:port</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">proxy</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">proxy</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">proxy</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">proxy</span>.<span class="ident">into</span>());
         <span class="self">self</span>

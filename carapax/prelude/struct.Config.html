@@ -3,7 +3,7 @@
 </div><h4 id='method.proxy' class="method"><code id='proxy.v'>pub fn <a href='#method.proxy' class='fnname'>proxy</a>&lt;S&gt;(self, proxy: S) -&gt; <a class="struct" href="../../carapax/prelude/struct.Config.html" title="struct carapax::prelude::Config">Config</a> <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;S: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt;,&nbsp;</span></code><a class='srclink' href='../../src/tgbot/api.rs.html#34-37' title='goto source code'>[src]</a></h4><div class='docblock'><p>Sets a proxy to config</p>
 <p>Proxy format:</p>
 <ul>
-<li>http://[user:password]host:port</li>
+<li>http://[user:password]@host:port</li>
 <li>https://[user:password]@host:port</li>
 <li>socks4://userid@host:port</li>
 <li>socks5://[user:password]@host:port</li>
