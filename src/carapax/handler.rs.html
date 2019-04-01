@@ -853,14 +853,6 @@
 <span id="853">853</span>
 <span id="854">854</span>
 <span id="855">855</span>
-<span id="856">856</span>
-<span id="857">857</span>
-<span id="858">858</span>
-<span id="859">859</span>
-<span id="860">860</span>
-<span id="861">861</span>
-<span id="862">862</span>
-<span id="863">863</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">context</span>::<span class="ident">Context</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
@@ -1330,8 +1322,8 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dispatcher</span>::{<span class="ident">Dispatcher</span>, <span class="ident">ErrorStrategy</span>};
+    <span class="kw">use</span> <span class="ident">serde_json</span>::{<span class="ident">from_value</span>, <span class="ident">json</span>};
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{
         <span class="ident">atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>},
         <span class="ident">Arc</span>,
@@ -1418,10 +1410,6 @@
         <span class="ident">HandlerResult</span>::<span class="ident">Continue</span>.<span class="ident">into</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">parse_update</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">Update</span> {
-        <span class="ident">serde_json</span>::<span class="ident">from_str</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>()
-    }
-
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_dispatch_message</span>() {
         <span class="kw">let</span> <span class="ident">dispatcher</span> <span class="op">=</span> <span class="ident">Dispatcher</span>::<span class="ident">new</span>(
@@ -1433,50 +1421,50 @@
             ],
             <span class="ident">ErrorStrategy</span>::<span class="ident">Abort</span>,
         );
-        <span class="kw">for</span> <span class="ident">data</span> <span class="kw">in</span> <span class="kw-2">&amp;</span>[
-            <span class="string">r#&quot;{
-                &quot;update_id&quot;: 1,
-                &quot;message&quot;: {
-                    &quot;message_id&quot;: 1111,
-                    &quot;date&quot;: 0,
-                    &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                    &quot;chat&quot;: {&quot;id&quot;: 1, &quot;type&quot;: &quot;private&quot;, &quot;first_name&quot;: &quot;test&quot;},
-                    &quot;text&quot;: &quot;test message from private chat&quot;
+        <span class="kw">for</span> <span class="ident">data</span> <span class="kw">in</span> <span class="macro">vec</span><span class="macro">!</span>[
+            <span class="macro">json</span><span class="macro">!</span>({
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;message&quot;</span>: {
+                    <span class="string">&quot;message_id&quot;</span>: <span class="number">1111</span>,
+                    <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
+                    <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;chat&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;private&quot;</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;test message from private chat&quot;</span>
                 }
-            }&quot;#</span>,
-            <span class="string">r#&quot;{
-                &quot;update_id&quot;: 1,
-                &quot;edited_message&quot;: {
-                    &quot;message_id&quot;: 1111,
-                    &quot;date&quot;: 0,
-                    &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                    &quot;chat&quot;: {&quot;id&quot;: 1, &quot;type&quot;: &quot;private&quot;, &quot;first_name&quot;: &quot;test&quot;},
-                    &quot;text&quot;: &quot;test edited message from private chat&quot;,
-                    &quot;edit_date&quot;: 1213
+            }),
+            <span class="macro">json</span><span class="macro">!</span>({
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;edited_message&quot;</span>: {
+                    <span class="string">&quot;message_id&quot;</span>: <span class="number">1111</span>,
+                    <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
+                    <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;chat&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;private&quot;</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;test edited message from private chat&quot;</span>,
+                    <span class="string">&quot;edit_date&quot;</span>: <span class="number">1213</span>
                 }
-            }&quot;#</span>,
-            <span class="string">r#&quot;{
-                &quot;update_id&quot;: 1,
-                &quot;channel_post&quot;: {
-                    &quot;message_id&quot;: 1111,
-                    &quot;date&quot;: 0,
-                    &quot;author_signature&quot;: &quot;test&quot;,
-                    &quot;chat&quot;: {&quot;id&quot;: 1, &quot;type&quot;: &quot;channel&quot;, &quot;title&quot;: &quot;channeltitle&quot;, &quot;username&quot;: &quot;channelusername&quot;},
-                    &quot;text&quot;: &quot;test message from channel&quot;
+            }),
+            <span class="macro">json</span><span class="macro">!</span>({
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;channel_post&quot;</span>: {
+                    <span class="string">&quot;message_id&quot;</span>: <span class="number">1111</span>,
+                    <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
+                    <span class="string">&quot;author_signature&quot;</span>: <span class="string">&quot;test&quot;</span>,
+                    <span class="string">&quot;chat&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;channel&quot;</span>, <span class="string">&quot;title&quot;</span>: <span class="string">&quot;channeltitle&quot;</span>, <span class="string">&quot;username&quot;</span>: <span class="string">&quot;channelusername&quot;</span>},
+                    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;test message from channel&quot;</span>
                 }
-            }&quot;#</span>,
-            <span class="string">r#&quot;{
-                &quot;update_id&quot;: 1,
-                &quot;edited_channel_post&quot;: {
-                    &quot;message_id&quot;: 1111,
-                    &quot;date&quot;: 0,
-                    &quot;chat&quot;: {&quot;id&quot;: 1, &quot;type&quot;: &quot;channel&quot;, &quot;title&quot;: &quot;channeltitle&quot;, &quot;username&quot;: &quot;channelusername&quot;},
-                    &quot;text&quot;: &quot;test edited message from channel&quot;,
-                    &quot;edit_date&quot;: 1213
+            }),
+            <span class="macro">json</span><span class="macro">!</span>({
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;edited_channel_post&quot;</span>: {
+                    <span class="string">&quot;message_id&quot;</span>: <span class="number">1111</span>,
+                    <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
+                    <span class="string">&quot;chat&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;channel&quot;</span>, <span class="string">&quot;title&quot;</span>: <span class="string">&quot;channeltitle&quot;</span>, <span class="string">&quot;username&quot;</span>: <span class="string">&quot;channelusername&quot;</span>},
+                    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;test edited message from channel&quot;</span>,
+                    <span class="string">&quot;edit_date&quot;</span>: <span class="number">1213</span>
                 }
-            }&quot;#</span>,
+            }),
         ] {
-            <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">parse_update</span>(<span class="ident">data</span>);
+            <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="ident">data</span>).<span class="ident">unwrap</span>();
             <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">dispatcher</span>.<span class="ident">dispatch</span>(<span class="ident">update</span>).<span class="ident">wait</span>().<span class="ident">unwrap</span>();
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">context</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">Counter</span><span class="op">&gt;</span>().<span class="ident">get_calls</span>(), <span class="number">2</span>);
         }
@@ -1493,19 +1481,18 @@
             ],
             <span class="ident">ErrorStrategy</span>::<span class="ident">Abort</span>,
         );
-        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">parse_update</span>(
-            <span class="string">r#&quot;
-                {
-                    &quot;update_id&quot;: 1,
-                    &quot;inline_query&quot;: {
-                        &quot;id&quot;: &quot;id&quot;,
-                        &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;query&quot;: &quot;query&quot;,
-                        &quot;offset&quot;: &quot;offset&quot;
-                    }
+        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="macro">json</span><span class="macro">!</span>(
+            {
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;inline_query&quot;</span>: {
+                    <span class="string">&quot;id&quot;</span>: <span class="string">&quot;id&quot;</span>,
+                    <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;query&quot;</span>: <span class="string">&quot;query&quot;</span>,
+                    <span class="string">&quot;offset&quot;</span>: <span class="string">&quot;offset&quot;</span>
                 }
-            &quot;#</span>,
-        );
+            }
+        ))
+        .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">dispatcher</span>.<span class="ident">dispatch</span>(<span class="ident">update</span>).<span class="ident">wait</span>().<span class="ident">unwrap</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">context</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">Counter</span><span class="op">&gt;</span>().<span class="ident">get_calls</span>(), <span class="number">2</span>);
     }
@@ -1521,18 +1508,17 @@
             ],
             <span class="ident">ErrorStrategy</span>::<span class="ident">Abort</span>,
         );
-        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">parse_update</span>(
-            <span class="string">r#&quot;
-                {
-                    &quot;update_id&quot;: 1,
-                    &quot;chosen_inline_result&quot;: {
-                        &quot;result_id&quot;: &quot;id&quot;,
-                        &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;query&quot;: &quot;query&quot;
-                    }
+        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="macro">json</span><span class="macro">!</span>(
+            {
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;chosen_inline_result&quot;</span>: {
+                    <span class="string">&quot;result_id&quot;</span>: <span class="string">&quot;id&quot;</span>,
+                    <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;query&quot;</span>: <span class="string">&quot;query&quot;</span>
                 }
-            &quot;#</span>,
-        );
+            }
+        ))
+        .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">dispatcher</span>.<span class="ident">dispatch</span>(<span class="ident">update</span>).<span class="ident">wait</span>().<span class="ident">unwrap</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">context</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">Counter</span><span class="op">&gt;</span>().<span class="ident">get_calls</span>(), <span class="number">2</span>);
     }
@@ -1548,17 +1534,16 @@
             ],
             <span class="ident">ErrorStrategy</span>::<span class="ident">Abort</span>,
         );
-        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">parse_update</span>(
-            <span class="string">r#&quot;
-                {
-                    &quot;update_id&quot;: 1,
-                    &quot;callback_query&quot;: {
-                        &quot;id&quot;: &quot;id&quot;,
-                        &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;}
-                    }
+        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="macro">json</span><span class="macro">!</span>(
+            {
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;callback_query&quot;</span>: {
+                    <span class="string">&quot;id&quot;</span>: <span class="string">&quot;id&quot;</span>,
+                    <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>}
                 }
-            &quot;#</span>,
-        );
+            }
+        ))
+        .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">dispatcher</span>.<span class="ident">dispatch</span>(<span class="ident">update</span>).<span class="ident">wait</span>().<span class="ident">unwrap</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">context</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">Counter</span><span class="op">&gt;</span>().<span class="ident">get_calls</span>(), <span class="number">2</span>);
     }
@@ -1574,26 +1559,25 @@
             ],
             <span class="ident">ErrorStrategy</span>::<span class="ident">Abort</span>,
         );
-        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">parse_update</span>(
-            <span class="string">r#&quot;
-                {
-                    &quot;update_id&quot;: 1,
-                    &quot;shipping_query&quot;: {
-                        &quot;id&quot;: &quot;id&quot;,
-                        &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;invoice_payload&quot;: &quot;payload&quot;,
-                        &quot;shipping_address&quot;: {
-                            &quot;country_code&quot;: &quot;RU&quot;,
-                            &quot;state&quot;: &quot;State&quot;,
-                            &quot;city&quot;: &quot;City&quot;,
-                            &quot;street_line1&quot;: &quot;Line 1&quot;,
-                            &quot;street_line2&quot;: &quot;Line 2&quot;,
-                            &quot;post_code&quot;: &quot;Post Code&quot;
-                        }
+        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="macro">json</span><span class="macro">!</span>(
+            {
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;shipping_query&quot;</span>: {
+                    <span class="string">&quot;id&quot;</span>: <span class="string">&quot;id&quot;</span>,
+                    <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;invoice_payload&quot;</span>: <span class="string">&quot;payload&quot;</span>,
+                    <span class="string">&quot;shipping_address&quot;</span>: {
+                        <span class="string">&quot;country_code&quot;</span>: <span class="string">&quot;RU&quot;</span>,
+                        <span class="string">&quot;state&quot;</span>: <span class="string">&quot;State&quot;</span>,
+                        <span class="string">&quot;city&quot;</span>: <span class="string">&quot;City&quot;</span>,
+                        <span class="string">&quot;street_line1&quot;</span>: <span class="string">&quot;Line 1&quot;</span>,
+                        <span class="string">&quot;street_line2&quot;</span>: <span class="string">&quot;Line 2&quot;</span>,
+                        <span class="string">&quot;post_code&quot;</span>: <span class="string">&quot;Post Code&quot;</span>
                     }
                 }
-            &quot;#</span>,
-        );
+            }
+        ))
+        .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">dispatcher</span>.<span class="ident">dispatch</span>(<span class="ident">update</span>).<span class="ident">wait</span>().<span class="ident">unwrap</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">context</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">Counter</span><span class="op">&gt;</span>().<span class="ident">get_calls</span>(), <span class="number">2</span>);
     }
@@ -1609,41 +1593,41 @@
             ],
             <span class="ident">ErrorStrategy</span>::<span class="ident">Abort</span>,
         );
-        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">parse_update</span>(
-            <span class="string">r#&quot;
-                {
-                    &quot;update_id&quot;: 1,
-                    &quot;pre_checkout_query&quot;: {
-                        &quot;id&quot;: &quot;id&quot;,
-                        &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;currency&quot;: &quot;RUB&quot;,
-                        &quot;total_amount&quot;: 145,
-                        &quot;invoice_payload&quot;: &quot;payload&quot;
-                    }
+        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="macro">json</span><span class="macro">!</span>(
+            {
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;pre_checkout_query&quot;</span>: {
+                    <span class="string">&quot;id&quot;</span>: <span class="string">&quot;id&quot;</span>,
+                    <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;currency&quot;</span>: <span class="string">&quot;RUB&quot;</span>,
+                    <span class="string">&quot;total_amount&quot;</span>: <span class="number">145</span>,
+                    <span class="string">&quot;invoice_payload&quot;</span>: <span class="string">&quot;payload&quot;</span>
                 }
-            &quot;#</span>,
-        );
+            }
+        ))
+        .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">context</span> <span class="op">=</span> <span class="ident">dispatcher</span>.<span class="ident">dispatch</span>(<span class="ident">update</span>).<span class="ident">wait</span>().<span class="ident">unwrap</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">context</span>.<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">Counter</span><span class="op">&gt;</span>().<span class="ident">get_calls</span>(), <span class="number">2</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_commands_handler</span>() {
-        <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">parse_update</span>(
-            <span class="string">r#&quot;{
-                &quot;update_id&quot;: 1,
-                &quot;message&quot;: {
-                    &quot;message_id&quot;: 1111,
-                    &quot;date&quot;: 0,
-                    &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                    &quot;chat&quot;: {&quot;id&quot;: 1, &quot;type&quot;: &quot;private&quot;, &quot;first_name&quot;: &quot;test&quot;},
-                    &quot;text&quot;: &quot;/testcommand &#39;arg1 v&#39; arg2&quot;,
-                    &quot;entities&quot;: [
-                        {&quot;type&quot;: &quot;bot_command&quot;, &quot;offset&quot;: 0, &quot;length&quot;: 12}
+        <span class="kw">let</span> <span class="ident">update</span>: <span class="ident">Update</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="macro">json</span><span class="macro">!</span>(
+            {
+                <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                <span class="string">&quot;message&quot;</span>: {
+                    <span class="string">&quot;message_id&quot;</span>: <span class="number">1111</span>,
+                    <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
+                    <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;chat&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;private&quot;</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;/testcommand &#39;arg1 v&#39; arg2&quot;</span>,
+                    <span class="string">&quot;entities&quot;</span>: [
+                        {<span class="string">&quot;type&quot;</span>: <span class="string">&quot;bot_command&quot;</span>, <span class="string">&quot;offset&quot;</span>: <span class="number">0</span>, <span class="string">&quot;length&quot;</span>: <span class="number">12</span>}
                     ]
                 }
-            }&quot;#</span>,
-        );
+            }
+        ))
+        .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">commands</span> <span class="op">=</span> <span class="ident">CommandsHandler</span>::<span class="ident">default</span>().<span class="ident">add_handler</span>(<span class="string">&quot;/testcommand&quot;</span>, <span class="ident">command_handler</span>);
         <span class="kw">let</span> <span class="ident">dispatcher</span> <span class="op">=</span> <span class="ident">Dispatcher</span>::<span class="ident">new</span>(
             <span class="ident">Api</span>::<span class="ident">new</span>(<span class="string">&quot;token&quot;</span>).<span class="ident">unwrap</span>(),
@@ -1659,62 +1643,62 @@
     <span class="kw">fn</span> <span class="ident">test_text_handler</span>() {
         <span class="kw">for</span> (<span class="ident">update</span>, <span class="ident">handler</span>) <span class="kw">in</span> <span class="macro">vec</span><span class="macro">!</span>[
             (
-                <span class="string">r#&quot;{
-                    &quot;update_id&quot;: 1,
-                    &quot;message&quot;: {
-                        &quot;message_id&quot;: 1111,
-                        &quot;date&quot;: 0,
-                        &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;chat&quot;: {&quot;id&quot;: 1, &quot;type&quot;: &quot;private&quot;, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;text&quot;: &quot;test substring contains&quot;
+                <span class="macro">json</span><span class="macro">!</span>({
+                    <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                    <span class="string">&quot;message&quot;</span>: {
+                        <span class="string">&quot;message_id&quot;</span>: <span class="number">1111</span>,
+                        <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
+                        <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                        <span class="string">&quot;chat&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;private&quot;</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                        <span class="string">&quot;text&quot;</span>: <span class="string">&quot;test substring contains&quot;</span>
                     }
-                }&quot;#</span>,
+                }),
                 <span class="ident">Handler</span>::<span class="ident">message</span>(<span class="ident">TextHandler</span>::<span class="ident">contains</span>(<span class="string">&quot;substring&quot;</span>, <span class="ident">handle_message</span>)),
             ),
             (
-                <span class="string">r#&quot;{
-                    &quot;update_id&quot;: 1,
-                    &quot;message&quot;: {
-                        &quot;message_id&quot;: 1111,
-                        &quot;date&quot;: 0,
-                        &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;chat&quot;: {&quot;id&quot;: 1, &quot;type&quot;: &quot;private&quot;, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;text&quot;: &quot;test equals&quot;
+                <span class="macro">json</span><span class="macro">!</span>({
+                    <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                    <span class="string">&quot;message&quot;</span>: {
+                        <span class="string">&quot;message_id&quot;</span>: <span class="number">1111</span>,
+                        <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
+                        <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                        <span class="string">&quot;chat&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;private&quot;</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                        <span class="string">&quot;text&quot;</span>: <span class="string">&quot;test equals&quot;</span>
                     }
-                }&quot;#</span>,
+                }),
                 <span class="ident">Handler</span>::<span class="ident">message</span>(<span class="ident">TextHandler</span>::<span class="ident">contains</span>(<span class="string">&quot;test equals&quot;</span>, <span class="ident">handle_message</span>)),
             ),
             (
-                <span class="string">r#&quot;{
-                    &quot;update_id&quot;: 1,
-                    &quot;message&quot;: {
-                        &quot;message_id&quot;: 1111,
-                        &quot;date&quot;: 0,
-                        &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;chat&quot;: {&quot;id&quot;: 1, &quot;type&quot;: &quot;private&quot;, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;text&quot;: &quot;test matches&quot;
+                <span class="macro">json</span><span class="macro">!</span>({
+                    <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                    <span class="string">&quot;message&quot;</span>: {
+                        <span class="string">&quot;message_id&quot;</span>: <span class="number">1111</span>,
+                        <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
+                        <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                        <span class="string">&quot;chat&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;private&quot;</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                        <span class="string">&quot;text&quot;</span>: <span class="string">&quot;test matches&quot;</span>
                     }
-                }&quot;#</span>,
+                }),
                 <span class="ident">Handler</span>::<span class="ident">message</span>(<span class="ident">TextHandler</span>::<span class="ident">matches</span>(<span class="string">&quot;matches$&quot;</span>, <span class="ident">handle_message</span>).<span class="ident">unwrap</span>()),
             ),
             (
-                <span class="string">r#&quot;{
-                    &quot;update_id&quot;: 1,
-                    &quot;message&quot;: {
-                        &quot;message_id&quot;: 1111,
-                        &quot;date&quot;: 0,
-                        &quot;from&quot;: {&quot;id&quot;: 1, &quot;is_bot&quot;: false, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;chat&quot;: {&quot;id&quot;: 1, &quot;type&quot;: &quot;private&quot;, &quot;first_name&quot;: &quot;test&quot;},
-                        &quot;text&quot;: &quot;test predicate&quot;
+                <span class="macro">json</span><span class="macro">!</span>({
+                    <span class="string">&quot;update_id&quot;</span>: <span class="number">1</span>,
+                    <span class="string">&quot;message&quot;</span>: {
+                        <span class="string">&quot;message_id&quot;</span>: <span class="number">1111</span>,
+                        <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
+                        <span class="string">&quot;from&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;is_bot&quot;</span>: <span class="bool-val">false</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                        <span class="string">&quot;chat&quot;</span>: {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;private&quot;</span>, <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;test&quot;</span>},
+                        <span class="string">&quot;text&quot;</span>: <span class="string">&quot;test predicate&quot;</span>
                     }
-                }&quot;#</span>,
+                }),
                 <span class="ident">Handler</span>::<span class="ident">message</span>(<span class="ident">TextHandler</span>::<span class="ident">new</span>(
                     <span class="op">|</span><span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">Text</span><span class="op">|</span> <span class="ident">text</span>.<span class="ident">data</span>.<span class="ident">contains</span>(<span class="string">&quot;predicate&quot;</span>),
                     <span class="ident">handle_message</span>,
                 )),
             ),
         ] {
-            <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">parse_update</span>(<span class="ident">update</span>);
+            <span class="kw">let</span> <span class="ident">update</span> <span class="op">=</span> <span class="ident">from_value</span>(<span class="ident">update</span>).<span class="ident">unwrap</span>();
             <span class="kw">let</span> <span class="ident">dispatcher</span> <span class="op">=</span> <span class="ident">Dispatcher</span>::<span class="ident">new</span>(
                 <span class="ident">Api</span>::<span class="ident">new</span>(<span class="string">&quot;token&quot;</span>).<span class="ident">unwrap</span>(),
                 <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Handler</span>::<span class="ident">update</span>(<span class="ident">setup_context</span>), <span class="ident">handler</span>],

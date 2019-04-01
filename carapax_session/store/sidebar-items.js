@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["redis","Redis session store"]],"struct":[["Session","Update aware session store"]],"trait":[["SessionStore","Methods for accessing a store"]]});
+initSidebarItems({"mod":[["fs","File system session store"],["redis","Redis session store"]],"trait":[["SessionStore","Methods for accessing a store"]]});

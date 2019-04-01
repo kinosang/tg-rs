@@ -35,9 +35,9 @@
 <span class="kw">use</span> <span class="ident">store</span>::<span class="ident">SessionStore</span>;
 
 <span class="kw">mod</span> <span class="ident">handler</span>;
-<span class="kw">mod</span> <span class="ident">namespace</span>;
+<span class="kw">mod</span> <span class="ident">session</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">namespace</span>::<span class="ident">SessionNamespace</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">session</span>::{<span class="ident">Session</span>, <span class="ident">SessionKey</span>};
 
 <span class="doccomment">/// Contains session store implementations</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">store</span>;

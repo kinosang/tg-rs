@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["session_handler","Creates a new session handler"]],"mod":[["store","Contains session store implementations"]],"struct":[["SessionNamespace","A session namespace"]]});
+initSidebarItems({"fn":[["session_handler","Creates a new session handler"]],"mod":[["store","Contains session store implementations"]],"struct":[["Session","Actual session available in context"],["SessionKey","A session key used in store"]]});

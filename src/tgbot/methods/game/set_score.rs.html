@@ -88,9 +88,11 @@
 <span id="88">88</span>
 <span id="89">89</span>
 <span id="90">90</span>
+<span id="91">91</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">methods</span>::<span class="ident">method</span>::<span class="kw-2">*</span>,
+    <span class="ident">methods</span>::<span class="ident">Method</span>,
+    <span class="ident">request</span>::<span class="ident">RequestBuilder</span>,
     <span class="ident">types</span>::{<span class="ident">EditMessageResult</span>, <span class="ident">Integer</span>},
 };
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
@@ -175,7 +177,7 @@
 <span class="kw">impl</span> <span class="ident">Method</span> <span class="kw">for</span> <span class="ident">SetGameScore</span> {
     <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">EditMessageResult</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RequestBuilder</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_request</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RequestBuilder</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">RequestBuilder</span>::<span class="ident">json</span>(<span class="string">&quot;setGameScore&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>)
     }
 }
