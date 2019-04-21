@@ -43,6 +43,7 @@
 <span id="43">43</span>
 <span id="44">44</span>
 <span id="45">45</span>
+<span id="46">46</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">methods</span>::<span class="ident">Method</span>,
@@ -56,11 +57,12 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Limitations:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// * A message can only be deleted if it was sent less than 48 hours ago</span>
-<span class="doccomment">/// * Bots can delete outgoing messages in private chats, groups, and supergroups</span>
-<span class="doccomment">/// * Bots granted can_post_messages permissions can delete outgoing messages in channels</span>
-<span class="doccomment">/// * If the bot is an administrator of a group, it can delete any message there</span>
-<span class="doccomment">/// * If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there</span>
+<span class="doccomment">/// * A message can only be deleted if it was sent less than 48 hours ago.</span>
+<span class="doccomment">/// * Bots can delete outgoing messages in private chats, groups, and supergroups.</span>
+<span class="doccomment">/// * Bots can delete incoming messages in private chats.</span>
+<span class="doccomment">/// * Bots granted can_post_messages permissions can delete outgoing messages in channels.</span>
+<span class="doccomment">/// * If the bot is an administrator of a group, it can delete any message there.</span>
+<span class="doccomment">/// * If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteMessage</span> {
     <span class="ident">chat_id</span>: <span class="ident">ChatId</span>,

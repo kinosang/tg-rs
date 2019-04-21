@@ -15,7 +15,7 @@ Bots can currently send audio files of up to 50 MB in size, this limit may be ch
 </div><h4 id='method.title' class="method"><code id='title.v'>pub fn <a href='#method.title' class='fnname'>title</a>&lt;S:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt;&gt;(self, value: S) -&gt; Self</code><a class='srclink' href='../../src/tgbot/methods/send/audio.rs.html#62-65' title='goto source code'>[src]</a></h4><div class='docblock'><p>Sets track name</p>
 </div><h4 id='method.thumb' class="method"><code id='thumb.v'>pub fn <a href='#method.thumb' class='fnname'>thumb</a>&lt;V&gt;(self, value: V) -&gt; Self <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;V: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="../../tgbot/types/struct.InputFile.html" title="struct tgbot::types::InputFile">InputFile</a>&gt;,&nbsp;</span></code><a class='srclink' href='../../src/tgbot/methods/send/audio.rs.html#76-82' title='goto source code'>[src]</a></h4><div class='docblock'><p>Sets thumbnail of the file</p>
 <p>The thumbnail should be in JPEG format and less than 200 kB in size
-A thumbnail‘s width and height should not exceed 90</p>
+A thumbnail‘s width and height should not exceed 320</p>
 <p>Ignored if the file is not uploaded using multipart/form-data
 Thumbnails can’t be reused and can be only uploaded as a new file,
 so you can pass “attach://&lt;file_attach_name&gt;” if the thumbnail

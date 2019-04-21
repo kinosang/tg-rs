@@ -303,6 +303,12 @@
 <span id="303">303</span>
 <span id="304">304</span>
 <span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{<span class="ident">chat</span>::<span class="ident">Chat</span>, <span class="ident">message</span>::<span class="ident">raw</span>::<span class="ident">RawMessage</span>, <span class="ident">primitive</span>::<span class="ident">Integer</span>, <span class="ident">user</span>::<span class="ident">User</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de</span>::<span class="ident">Error</span>, <span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>};
@@ -427,12 +433,17 @@
             <span class="ident">raw</span>.<span class="ident">forward_from_chat</span>,
             <span class="ident">raw</span>.<span class="ident">forward_from_message_id</span>,
             <span class="ident">raw</span>.<span class="ident">forward_signature</span>,
+            <span class="ident">raw</span>.<span class="ident">forward_sender_name</span>,
         ) {
-            (<span class="prelude-val">Some</span>(<span class="ident">date</span>), <span class="prelude-val">Some</span>(<span class="ident">user</span>), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Forward</span> {
+            (<span class="prelude-val">Some</span>(<span class="ident">date</span>), <span class="prelude-val">Some</span>(<span class="ident">user</span>), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Forward</span> {
                 <span class="ident">date</span>,
                 <span class="ident">from</span>: <span class="ident">ForwardFrom</span>::<span class="ident">User</span>(<span class="ident">user</span>),
             }),
-            (<span class="prelude-val">Some</span>(<span class="ident">date</span>), <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">Chat</span>::<span class="ident">Channel</span>(<span class="ident">chat</span>)), <span class="ident">message_id</span>, <span class="ident">signature</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Forward</span> {
+            (<span class="prelude-val">Some</span>(<span class="ident">date</span>), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">sender_name</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Forward</span> {
+                <span class="ident">date</span>,
+                <span class="ident">from</span>: <span class="ident">ForwardFrom</span>::<span class="ident">HiddenUser</span>(<span class="ident">sender_name</span>),
+            }),
+            (<span class="prelude-val">Some</span>(<span class="ident">date</span>), <span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">Chat</span>::<span class="ident">Channel</span>(<span class="ident">chat</span>)), <span class="prelude-val">Some</span>(<span class="ident">message_id</span>), <span class="ident">signature</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Forward</span> {
                 <span class="ident">date</span>,
                 <span class="ident">from</span>: <span class="ident">ForwardFrom</span>::<span class="ident">Channel</span> {
                     <span class="ident">chat</span>,
@@ -440,7 +451,7 @@
                     <span class="ident">signature</span>,
                 },
             }),
-            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
             <span class="kw">_</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseError</span>::<span class="ident">BadForward</span>),
         };
 
@@ -529,6 +540,7 @@
         <span class="macro">message</span><span class="macro">!</span>(<span class="ident">NewChatTitle</span>(<span class="ident">new_chat_title</span>));
         <span class="macro">message</span><span class="macro">!</span>(<span class="ident">PassportData</span>(<span class="ident">passport_data</span>));
         <span class="macro">message</span><span class="macro">!</span>(<span class="ident">Photo</span>(<span class="ident">photo</span>, <span class="ident">caption</span>));
+        <span class="macro">message</span><span class="macro">!</span>(<span class="ident">Poll</span>(<span class="ident">poll</span>));
         <span class="macro">message</span><span class="macro">!</span>(<span class="ident">Sticker</span>(<span class="ident">sticker</span>));
         <span class="macro">message</span><span class="macro">!</span>(<span class="ident">SuccessfulPayment</span>(<span class="ident">successful_payment</span>));
         <span class="macro">message</span><span class="macro">!</span>(<span class="ident">SupergroupChatCreated</span>(<span class="ident">supergroup_chat_created</span>, <span class="ident">flag</span>));

@@ -106,6 +106,9 @@
 <span id="106">106</span>
 <span id="107">107</span>
 <span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{
     <span class="ident">animation</span>::<span class="ident">Animation</span>,
@@ -118,6 +121,7 @@
     <span class="ident">passport</span>::<span class="ident">PassportData</span>,
     <span class="ident">payments</span>::{<span class="ident">Invoice</span>, <span class="ident">SuccessfulPayment</span>},
     <span class="ident">photo_size</span>::<span class="ident">PhotoSize</span>,
+    <span class="ident">poll</span>::<span class="ident">Poll</span>,
     <span class="ident">primitive</span>::<span class="ident">Integer</span>,
     <span class="ident">stickers</span>::<span class="ident">Sticker</span>,
     <span class="ident">user</span>::<span class="ident">User</span>,
@@ -138,6 +142,7 @@
     <span class="kw">pub</span> <span class="ident">forward_from_chat</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Chat</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">forward_from_message_id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Integer</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">forward_signature</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">forward_sender_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">forward_date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Integer</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">reply_to_message</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">RawMessage</span><span class="op">&gt;&gt;</span>,
     <span class="kw">pub</span> <span class="ident">edit_date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Integer</span><span class="op">&gt;</span>,
@@ -151,6 +156,7 @@
     <span class="kw">pub</span> <span class="ident">document</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Document</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">game</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Game</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">photo</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PhotoSize</span><span class="op">&gt;&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">poll</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Poll</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">sticker</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Sticker</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">video</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Video</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">voice</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Voice</span><span class="op">&gt;</span>,

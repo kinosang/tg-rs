@@ -26,6 +26,18 @@
 <span id="26">26</span>
 <span id="27">27</span>
 <span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="doccomment">//! A session handler for carapax</span>
@@ -34,10 +46,14 @@
 <span class="kw">use</span> <span class="ident">carapax</span>::<span class="ident">Handler</span>;
 <span class="kw">use</span> <span class="ident">store</span>::<span class="ident">SessionStore</span>;
 
+<span class="kw">mod</span> <span class="ident">gc</span>;
 <span class="kw">mod</span> <span class="ident">handler</span>;
 <span class="kw">mod</span> <span class="ident">session</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">session</span>::{<span class="ident">Session</span>, <span class="ident">SessionKey</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::{
+    <span class="ident">gc</span>::{<span class="ident">spawn_gc</span>, <span class="ident">GarbageCollector</span>},
+    <span class="ident">session</span>::{<span class="ident">Session</span>, <span class="ident">SessionKey</span>, <span class="ident">SessionLifetime</span>},
+};
 
 <span class="doccomment">/// Contains session store implementations</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">store</span>;
@@ -45,9 +61,17 @@
 <span class="doccomment">/// Creates a new session handler</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This handler sets Session to context,</span>
-<span class="doccomment">/// so you can use it in your handlers like</span>
-<span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// let session = context.get::&lt;Session&lt;Store&gt;&gt;();</span>
+<span class="doccomment">/// so you can use it in your handlers:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use carapax::prelude::*;</span>
+<span class="doccomment">/// use carapax_session::{store::redis::RedisSessionStore, Session};</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn handler(context: &amp;mut Context, message: &amp;Message) -&gt; HandlerFuture {</span>
+<span class="doccomment">///     let session = context.get::&lt;Session&lt;RedisSessionStore&gt;&gt;();</span>
+<span class="doccomment">///     // do something with session...</span>
+<span class="doccomment">///     HandlerResult::Continue.into()</span>
+<span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">session_handler</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">store</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="ident">Handler</span>
 <span class="kw">where</span>

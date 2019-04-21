@@ -115,6 +115,9 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{
     <span class="ident">animation</span>::<span class="ident">Animation</span>,
@@ -127,6 +130,7 @@
     <span class="ident">passport</span>::<span class="ident">PassportData</span>,
     <span class="ident">payments</span>::{<span class="ident">Invoice</span>, <span class="ident">SuccessfulPayment</span>},
     <span class="ident">photo_size</span>::<span class="ident">PhotoSize</span>,
+    <span class="ident">poll</span>::<span class="ident">Poll</span>,
     <span class="ident">primitive</span>::<span class="ident">Integer</span>,
     <span class="ident">stickers</span>::<span class="ident">Sticker</span>,
     <span class="ident">user</span>::<span class="ident">User</span>,
@@ -202,6 +206,8 @@
         <span class="doccomment">/// Photos</span>
         <span class="ident">data</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PhotoSize</span><span class="op">&gt;</span>,
     },
+    <span class="doccomment">/// Message is a native poll, information about the poll</span>
+    <span class="ident">Poll</span>(<span class="ident">Poll</span>),
     <span class="doccomment">/// Message is a sticker, information about the sticker</span>
     <span class="ident">Sticker</span>(<span class="ident">Sticker</span>),
     <span class="doccomment">/// Message is a service message about a successful payment, information about the payment</span>

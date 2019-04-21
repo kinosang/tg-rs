@@ -11,7 +11,7 @@
 </div><h4 id='method.height' class="method"><code id='height.v'>pub fn <a href='#method.height' class='fnname'>height</a>(self, value: <a class="type" href="../../tgbot/types/type.Integer.html" title="type tgbot::types::Integer">Integer</a>) -&gt; Self</code><a class='srclink' href='../../src/tgbot/methods/send/animation.rs.html#47-50' title='goto source code'>[src]</a></h4><div class='docblock'><p>Sets animation height</p>
 </div><h4 id='method.thumb' class="method"><code id='thumb.v'>pub fn <a href='#method.thumb' class='fnname'>thumb</a>&lt;V&gt;(self, value: V) -&gt; Self <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;V: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="../../tgbot/types/struct.InputFile.html" title="struct tgbot::types::InputFile">InputFile</a>&gt;,&nbsp;</span></code><a class='srclink' href='../../src/tgbot/methods/send/animation.rs.html#60-66' title='goto source code'>[src]</a></h4><div class='docblock'><p>Sets thumbnail of the file sent</p>
 <p>The thumbnail should be in JPEG format and less than 200 kB in size
-A thumbnail‘s width and height should not exceed 90
+A thumbnail‘s width and height should not exceed 320
 Ignored if the file is not uploaded using multipart/form-data
 Thumbnails can’t be reused and can be only uploaded as a new file,
 so you can pass “attach://&lt;file_attach_name&gt;”
