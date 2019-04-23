@@ -220,7 +220,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse</span>() {
+    <span class="kw">fn</span> <span class="ident">deserialize</span>() {
         <span class="kw">let</span> <span class="ident">success</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Object</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_value</span>(<span class="macro">json</span><span class="macro">!</span>({
             <span class="string">&quot;ok&quot;</span>: <span class="bool-val">true</span>,
             <span class="string">&quot;result&quot;</span>: {<span class="string">&quot;name&quot;</span>: <span class="string">&quot;test&quot;</span> }
