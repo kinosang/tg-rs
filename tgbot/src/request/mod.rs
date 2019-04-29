@@ -38,10 +38,14 @@ impl RequestBuilder {
         })
     }
 
-    pub(crate) fn build(self, base_url: &str, token: &str) -> Request {
+    pub(crate) fn build<T, U>(self, base_url: T, token: U) -> Request
+    where
+        T: AsRef<str>,
+        U: AsRef<str>,
+    {
         Request {
             method: self.method,
-            url: format!("{}/bot{}/{}", base_url, token, self.path),
+            url: format!("{}/bot{}/{}", base_url.as_ref(), token.as_ref(), self.path),
             body: self.body,
         }
     }

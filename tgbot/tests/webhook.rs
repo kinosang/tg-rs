@@ -1,10 +1,13 @@
+#![feature(async_await, await_macro)]
+
 use dotenv::dotenv;
 use env_logger;
 use failure::Error;
-use futures::{future, sync::oneshot::channel, Future, Stream};
+use futures01::{sync::oneshot::channel, Future, Stream};
+use futures03::{compat::Future01CompatExt, TryFutureExt};
 use hyper::{header::HeaderValue, Body, Client, Method, Request, Server, StatusCode};
 use log;
-use tgbot::prelude::*;
+use tgbot::{types::Update, UpdateHandler, WebhookServiceFactory};
 use tokio::runtime::current_thread::block_on_all;
 
 struct Handler;
@@ -24,49 +27,54 @@ fn webhook() {
         .serve(WebhookServiceFactory::new("/", Handler))
         .with_graceful_shutdown(rx)
         .map_err(|e| log::error!("Server error: {}", e));
-    let (status, body) = block_on_all(future::lazy(|| {
-        tokio::spawn(server);
-        let client = Client::new();
-        let json = r#"{
-            "update_id":10000,
-            "message":{
-                "date":1441645532,
-                "chat":{
-                    "last_name":"Test Lastname",
-                    "id":1111111,
-                    "first_name":"Test",
-                    "username":"Test",
-                    "type": "private"
-                },
-                "message_id":1365,
-                "from":{
-                    "last_name":"Test Lastname",
-                    "id":1111111,
-                    "first_name":"Test",
-                    "username":"Test",
-                    "is_bot": false
-                },
-                "text":"/start"
-            }
-        }"#;
-        let uri: hyper::Uri = "http://localhost:8080/".parse().unwrap();
-        let mut req = Request::new(Body::from(json));
-        *req.method_mut() = Method::POST;
-        *req.uri_mut() = uri.clone();
-        req.headers_mut().insert(
-            hyper::header::CONTENT_TYPE,
-            HeaderValue::from_static("application/json"),
-        );
-        client.request(req).map_err(Error::from).and_then(|res| {
-            let _ = tx.send(());
-            let status = res.status();
-            res.into_body()
-                .concat2()
-                .map_err(Error::from)
-                .and_then(|body| String::from_utf8(body.into_iter().collect()).map_err(Error::from))
-                .map(move |body| (status, body))
-        })
-    }))
+    let (status, body) = block_on_all(
+        Box::pin(
+            async {
+                tokio::spawn(server);
+                let client = Client::new();
+                let json: serde_json::Value = serde_json::json!({
+                    "update_id": 10000,
+                    "message": {
+                        "date": 1_441_645_532,
+                        "chat": {
+                            "last_name": "Test Lastname",
+                            "id": 1_111_111,
+                            "first_name": "Test",
+                            "username": "Test",
+                            "type": "private"
+                        },
+                        "message_id": 1365,
+                        "from": {
+                            "last_name": "Test Lastname",
+                            "id": 1_111_111,
+                            "first_name": "Test",
+                            "username": "Test",
+                            "is_bot": false
+                        },
+                        "text": "/start"
+                    }
+                });
+                let json = json.to_string();
+                let uri: hyper::Uri = "http://localhost:8080/".parse().unwrap();
+
+                let mut req = Request::new(Body::from(json));
+                *req.method_mut() = Method::POST;
+                *req.uri_mut() = uri.clone();
+                req.headers_mut().insert(
+                    hyper::header::CONTENT_TYPE,
+                    HeaderValue::from_static("application/json"),
+                );
+
+                let resp = await!(client.request(req).compat())?;
+                let _ = tx.send(());
+                let status = resp.status();
+                let body = await!(resp.into_body().concat2().compat())?;
+                let body = String::from_utf8(body.into_iter().collect())?;
+                Ok::<_, Error>((status, body))
+            },
+        )
+        .compat(),
+    )
     .unwrap();
     log::debug!("Webhook response body: {:?}", body);
     assert_eq!(status, StatusCode::OK);

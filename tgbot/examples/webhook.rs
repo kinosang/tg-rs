@@ -1,5 +1,6 @@
 use dotenv::dotenv;
 use env_logger;
+use futures03::TryStreamExt;
 use log;
 use tgbot::{handle_updates, types::Update, UpdateHandler, UpdateMethod};
 
@@ -14,8 +15,5 @@ impl UpdateHandler for Handler {
 fn main() {
     dotenv().ok();
     env_logger::init();
-    tokio::run(handle_updates(
-        UpdateMethod::webhook(([127, 0, 0, 1], 8080), "/"),
-        Handler,
-    ));
+    tokio::run(handle_updates(UpdateMethod::webhook(([127, 0, 0, 1], 8080), "/"), Handler).compat());
 }

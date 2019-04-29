@@ -1,5 +1,5 @@
 use dotenv::dotenv;
-use futures::Stream;
+use futures03::{TryFutureExt, TryStreamExt};
 use mockito::{mock, server_url, Matcher};
 use serde_json::json;
 use tgbot::prelude::*;
@@ -42,9 +42,8 @@ fn poll() {
         )
         .create();
     let api = Api::new(Config::new("token").host(server_url())).unwrap();
-    let f = UpdatesStream::from(api).should_retry(false).take(1).collect();
-    let updates = block_on_all(f).unwrap();
-    assert_eq!(updates.len(), 1);
-    let update = &updates[0];
+    let mut fut = UpdatesStream::from(api).should_retry(false);
+    let next = fut.try_next().compat();
+    let update = block_on_all(next).unwrap().unwrap();
     assert_eq!(update.id, 1);
 }

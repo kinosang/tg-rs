@@ -1,15 +1,21 @@
 use crate::{
-    api::{Api, ApiFuture},
+    api::Api,
     methods::GetUpdates,
     types::{AllowedUpdate, Integer, ResponseError, Update},
 };
 use failure::Error;
-use futures::{task, try_ready, Async, Future, Poll, Stream};
+use futures03::{
+    compat::{Compat01As03, Future01CompatExt},
+    ready,
+    task::Context,
+    Future, Poll, Stream,
+};
 use log::error;
 use std::{
     cmp::max,
     collections::{HashSet, VecDeque},
     mem,
+    pin::Pin,
     time::Duration,
 };
 use tokio_timer::sleep;
@@ -18,10 +24,12 @@ const DEFAULT_LIMIT: Integer = 100;
 const DEFAULT_POLL_TIMEOUT: Duration = Duration::from_secs(10);
 const DEFAULT_ERROR_TIMEOUT: Duration = Duration::from_secs(5);
 
+type RunningFuture = Pin<Box<Future<Output = Result<Vec<Update>, Error>>>>;
+
 enum State {
     BufferedResults(VecDeque<Update>),
-    Running(ApiFuture<Vec<Update>>),
-    Idling(tokio_timer::Delay),
+    Running(RunningFuture),
+    Idling(Compat01As03<tokio_timer::Delay>),
 }
 
 /// Updates stream used for long polling
@@ -33,14 +41,15 @@ pub struct UpdatesStream {
     should_retry: bool,
 }
 
-fn make_request(api: &Api, options: &UpdatesStreamOptions) -> ApiFuture<Vec<Update>> {
-    api.execute(
+fn make_request(api: &Api, options: &UpdatesStreamOptions) -> RunningFuture {
+    let fut = api.execute(
         GetUpdates::default()
             .offset(options.offset + 1)
             .limit(options.limit)
             .timeout(options.poll_timeout)
             .allowed_updates(options.allowed_updates.clone()),
-    )
+    );
+    Box::pin(fut)
 }
 
 impl State {
@@ -58,7 +67,7 @@ impl State {
                     .and_then(|parameters| parameters.retry_after.map(|count| Duration::from_secs(count as u64)))
             })
             .unwrap_or(DEFAULT_ERROR_TIMEOUT);
-        mem::replace(self, State::Idling(sleep(error_timeout)));
+        mem::replace(self, State::Idling(sleep(error_timeout).compat()));
     }
 
     fn switch_to_request(&mut self, api: &Api, options: &UpdatesStreamOptions) {
@@ -72,36 +81,41 @@ impl State {
 }
 
 impl Stream for UpdatesStream {
-    type Item = Update;
-    type Error = Error;
+    type Item = Result<Update, Error>;
 
-    fn poll(&mut self) -> Poll<Option<Self::Item>, Self::Error> {
-        loop {
-            match &mut self.state {
-                State::BufferedResults(buffered) => {
-                    if let Some(update) = buffered.pop_front() {
-                        self.options.offset = max(self.options.offset, update.id);
-                        task::current().notify();
-                        return Ok(Async::Ready(Some(update)));
-                    } else {
-                        self.state.switch_to_request(&self.api, &self.options);
-                    }
-                }
-                State::Running(request_fut) => match request_fut.poll() {
-                    Ok(Async::NotReady) => return Ok(Async::NotReady),
-                    Ok(Async::Ready(items)) => self.state.switch_to_buffered(items),
-                    Err(err) => {
-                        if self.should_retry {
-                            self.state.switch_to_idle(err)
+    fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
+        unsafe {
+            loop {
+                let stream = self.as_mut().get_unchecked_mut();
+                let mut state = &mut stream.state;
+                match &mut state {
+                    State::BufferedResults(buffered) => {
+                        if let Some(update) = buffered.pop_front() {
+                            stream.options.offset = max(stream.options.offset, update.id);
+                            cx.waker().clone().wake();
+                            return Poll::Ready(Some(Ok(update)));
                         } else {
-                            return Err(err);
+                            state.switch_to_request(&stream.api, &stream.options);
                         }
                     }
-                },
-                State::Idling(delay_fut) => {
-                    // Timer errors are unrecoverable.
-                    try_ready!(delay_fut.poll());
-                    self.state.switch_to_request(&self.api, &self.options)
+                    State::Running(request_fut) => match ready!(request_fut.as_mut().poll(cx)) {
+                        Ok(items) => state.switch_to_buffered(items),
+                        Err(err) => {
+                            if stream.should_retry {
+                                state.switch_to_idle(err)
+                            } else {
+                                return Poll::Ready(Some(Err(err)));
+                            }
+                        }
+                    },
+                    State::Idling(delay_fut) => {
+                        // Timer errors are unrecoverable.
+                        match ready!(Pin::new_unchecked(delay_fut).poll(cx)) {
+                            Ok(()) => {}
+                            Err(err) => return Poll::Ready(Some(Err(err.into()))),
+                        }
+                        state.switch_to_request(&stream.api, &stream.options)
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 //! A Telegram Bot API client library
 #![warn(missing_docs)]
 #![recursion_limit = "128"]
+#![feature(async_await, await_macro)]
 
 mod api;
 mod executor;

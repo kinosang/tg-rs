@@ -1,6 +1,8 @@
+#![feature(async_await, await_macro)]
+
 use dotenv::dotenv;
 use env_logger;
-use futures::Future;
+use futures03::Future;
 use log;
 use std::{env, io::Cursor};
 use tgbot::{
@@ -28,10 +30,12 @@ impl UpdateHandler for Handler {
 
         macro_rules! execute {
             ($method:expr) => {
-                self.api.spawn(self.api.execute($method).then(|x| {
-                    log::info!("method result: {:?}\n", x);
-                    Ok::<(), ()>(())
-                }));
+                self.api.spawn(
+                    async {
+                        let message = await!(self.api.execute(method))?;
+                        log::info!("sendMessage result: {:?}\n", message);
+                    },
+                );
             };
         }
 

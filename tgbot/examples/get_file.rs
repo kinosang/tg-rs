@@ -1,7 +1,9 @@
+#![feature(async_await, await_macro)]
+
 use dotenv::dotenv;
 use env_logger;
 use failure::Error;
-use futures::Future;
+use futures03::{Future, TryFutureExt};
 use log;
 use std::env;
 use tgbot::{
@@ -16,28 +18,20 @@ struct Handler {
     api: Api,
 }
 
-fn handle_document(api: &Api, document: Document) -> Box<Future<Item = (), Error = Error> + Send> {
-    let api = api.clone();
-    Box::new(
-        api.execute(GetFile::new(document.file_id.as_str()))
-            .and_then(move |file| {
-                let file_path = file.file_path.unwrap();
-                api.download_file(file_path)
-            })
-            .and_then(move |data| {
-                println!("Name: {:?}", document.file_name);
-                println!("Mime-Type: {:?}", document.mime_type);
-                println!("Document size: {:?}", document.file_size);
-                println!("Downloaded size: {:?}", data.len());
-                File::create(format!(
-                    "/tmp/tgbot-get-file-{}",
-                    document.file_name.unwrap_or_else(|| String::from("unknown"))
-                ))
-                .and_then(move |mut file| file.poll_write(&data))
-                .map(|_| ())
-                .from_err()
-            }),
-    )
+async fn handle_document(api: &Api, document: Document) -> Result<(), Error> {
+    let file = await!(api.execute(GetFile::new(document.file_id.as_str())))?;
+    let file_path = file.file_path.unwrap();
+    let data = await!(api.download_file(file_path))?;
+    println!("Name: {:?}", document.file_name);
+    println!("Mime-Type: {:?}", document.mime_type);
+    println!("Document size: {:?}", document.file_size);
+    println!("Downloaded size: {:?}", data.len());
+    let file = await!(File::create(format!(
+        "/tmp/tgbot-get-file-{}",
+        document.file_name.unwrap_or_else(|| String::from("unknown"))
+    ))
+    .compat());
+    let _ = await!(file.poll_write(&data))?;
 }
 
 impl UpdateHandler for Handler {

@@ -1,12 +1,12 @@
-use crate::types::Update;
-use futures::{future::Either, Future, Stream};
-use hyper::Server;
-use std::net::SocketAddr;
-
 mod poll;
 mod webhook;
 
 pub use self::{poll::*, webhook::*};
+
+use crate::types::Update;
+use futures03::{compat::Future01CompatExt, TryStreamExt};
+use hyper::Server;
+use std::net::SocketAddr;
 
 /// An update handler
 pub trait UpdateHandler {
@@ -53,23 +53,27 @@ enum UpdateMethodKind {
 }
 
 /// Start getting updates
-pub fn handle_updates<H>(update_method: UpdateMethod, mut handler: H) -> impl Future<Item = (), Error = ()>
+pub async fn handle_updates<H>(update_method: UpdateMethod, mut handler: H)
 where
     H: UpdateHandler + Send + Sync + 'static,
 {
     match update_method.kind {
-        UpdateMethodKind::Poll(stream) => Either::A(
-            stream
-                .for_each(move |update| {
-                    handler.handle(update);
-                    Ok(())
-                })
-                .then(|_| Ok(())),
-        ),
-        UpdateMethodKind::Webhook { addr, path } => Either::B(
-            Server::bind(&addr)
+        UpdateMethodKind::Poll(stream) => {
+            if let Err(err) = await!(stream.try_for_each(|update| {
+                handler.handle(update);
+                futures03::future::ready(Ok(()))
+            })) {
+                log::error!("Poll error: {}", err);
+            }
+        }
+        UpdateMethodKind::Webhook { addr, path } => {
+            if let Err(err) = await!(Server::bind(&addr)
                 .serve(WebhookServiceFactory::new(path, handler))
-                .map_err(|e| log::error!("Server error: {}", e)),
-        ),
+                .compat())
+            {
+                log::error!("Webhook error: {}", err);
+            }
+     
+        }
     }
 }

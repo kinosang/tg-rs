@@ -1,6 +1,9 @@
+#![feature(async_await, await_macro)]
+
 use dotenv::dotenv;
 use env_logger;
-use futures::Future;
+use failure::Error;
+use futures03::Future;
 use log;
 use serde::{Deserialize, Serialize};
 use std::env;
@@ -8,7 +11,7 @@ use tgbot::{
     handle_updates,
     methods::SendMessage,
     types::{InlineKeyboardButton, Message, Update, UpdateKind},
-    Api, ApiFuture, Config, UpdateHandler, UpdateMethod,
+    Api, Config, UpdateHandler, UpdateMethod,
 };
 
 struct Handler {
@@ -26,7 +29,7 @@ impl CallbackData {
     }
 }
 
-fn handle_update(api: &Api, update: Update) -> Option<ApiFuture<Message>> {
+async fn handle_update(api: &Api, update: Update) -> Result<Option<Message>, Error> {
     match update.kind {
         UpdateKind::Message(message) => {
             let chat_id = message.get_chat_id();
@@ -38,7 +41,8 @@ fn handle_update(api: &Api, update: Update) -> Option<ApiFuture<Message>> {
                         // You also can use with_callback_data in order to pass a plain string
                         InlineKeyboardButton::with_callback_data_struct("button", &callback_data).unwrap(),
                     ]]);
-                    return Some(api.execute(method));
+                    let message = await!(api.execute(method))?;
+                    return Ok(Some(message));
                 }
             }
         }
@@ -48,7 +52,8 @@ fn handle_update(api: &Api, update: Update) -> Option<ApiFuture<Message>> {
                 // or query.data if you have passed a plain string
                 let data = query.parse_data::<CallbackData>().unwrap().unwrap();
                 let method = SendMessage::new(chat_id, data.value);
-                return Some(api.execute(method));
+                let message = await!(api.execute(method))?;
+                return Ok(Some(message));
             }
         }
         _ => {}
@@ -59,14 +64,7 @@ fn handle_update(api: &Api, update: Update) -> Option<ApiFuture<Message>> {
 impl UpdateHandler for Handler {
     fn handle(&mut self, update: Update) {
         log::info!("Got an update: {:?}", update);
-        if let Some(f) = handle_update(&self.api, update) {
-            self.api.spawn(f.then(|r| {
-                if let Err(e) = r {
-                    log::error!("An error has occurred: {:?}", e);
-                }
-                Ok::<(), ()>(())
-            }))
-        }
+        self.api.spawn(handle_update(&self.api, update));
     }
 }
 

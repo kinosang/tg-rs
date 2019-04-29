@@ -5,7 +5,7 @@ use crate::{
     types::Response,
 };
 use failure::Error;
-use futures::{future, Future, Poll};
+use futures03::{Future, TryFutureExt};
 use serde::de::DeserializeOwned;
 use std::{fmt::Debug, sync::Arc};
 
@@ -85,67 +85,49 @@ impl Api {
     /// Downloads a file
     ///
     /// Use getFile method in order get file_path
-    pub fn download_file<P: AsRef<str>>(&self, file_path: P) -> ApiFuture<Vec<u8>> {
+    #[allow(clippy::needless_lifetimes)]
+    pub async fn download_file<P: AsRef<str>>(&self, file_path: P) -> Result<Vec<u8>, Error> {
         let executor = self.executor.clone();
-        ApiFuture {
-            inner: Box::new(
-                future::result(
-                    RequestBuilder::empty(file_path.as_ref())
-                        .map(|builder| builder.build(&format!("{}/file", &self.host), &self.token)),
-                )
-                .and_then(move |req| executor.execute(req)),
-            ),
-        }
+        let req = RequestBuilder::empty(file_path.as_ref())
+            .map(|builder| builder.build(format!("{}/file", &self.host), &self.token))?;
+        let vec = await!(executor.execute(req))?;
+        Ok(vec)
     }
 
     /// Executes a method
-    pub fn execute<M: Method>(&self, method: M) -> ApiFuture<M::Response>
+    pub fn execute<M: Method>(&self, method: M) -> impl Future<Output = Result<M::Response, Error>>
     where
         M::Response: DeserializeOwned + Send + 'static,
     {
+        let host = self.host.clone();
+        let token = self.token.clone();
         let executor = self.executor.clone();
-        ApiFuture {
-            inner: Box::new(
-                future::result(
-                    method
-                        .into_request()
-                        .map(|builder| builder.build(&self.host, &self.token)),
-                )
-                .and_then(move |req| executor.execute(req))
-                .and_then(|data| serde_json::from_slice::<Response<M::Response>>(&data).map_err(Error::from))
-                .and_then(|rep| match rep {
-                    Response::Success(obj) => Ok(obj),
-                    Response::Error(err) => Err(err.into()),
-                }),
-            ),
+        async move {
+            let req = method.into_request().map(|builder| builder.build(host, token))?;
+            let data = await!(executor.execute(req))?;
+            let resp = serde_json::from_slice::<Response<M::Response>>(&data)?;
+            match resp {
+                Response::Success(obj) => Ok(obj),
+                Response::Error(err) => Err(err.into()),
+            }
         }
     }
 
     /// Spawns a future on the default executor.
     pub fn spawn<F, T, E: Debug>(&self, f: F)
     where
-        F: Future<Item = T, Error = E> + 'static + Send,
+        F: Future<Output = Result<T, E>> + 'static + Send,
     {
-        tokio_executor::spawn(f.then(|r| {
-            if let Err(e) = r {
-                log::error!("An error has occurred: {:?}", e)
-            }
-            Ok(())
-        }));
-    }
-}
-
-/// An API future
-#[must_use = "futures do nothing unless polled"]
-pub struct ApiFuture<T> {
-    inner: Box<Future<Item = T, Error = Error> + Send>,
-}
-
-impl<T> Future for ApiFuture<T> {
-    type Item = T;
-    type Error = Error;
-
-    fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
-        self.inner.poll()
+        tokio_executor::spawn(
+            Box::pin(
+                async {
+                    if let Err(e) = await!(f) {
+                        log::error!("An error has occurred: {:?}", e)
+                    }
+                    Ok(())
+                },
+            )
+            .compat(),
+        );
     }
 }

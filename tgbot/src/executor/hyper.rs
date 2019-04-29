@@ -3,17 +3,18 @@ use crate::{
     request::{Request, RequestBody, RequestMethod},
 };
 use failure::Error;
-use futures::{future, Future, Stream};
+use futures01::Stream;
+use futures03::{compat::Future01CompatExt, Future};
 use hyper::{
     client::{connect::Connect, Client, HttpConnector},
-    Body, Request as HttpRequest,
+    Body, Chunk, Request as HttpRequest, Response,
 };
 use hyper_multipart_rfc7578::client::multipart::{Body as MultipartBody, Form as MultipartForm};
 use hyper_proxy::{Intercept as HttpProxyIntercept, Proxy as HttpProxy, ProxyConnector as HttpProxyConnector};
 use hyper_socks2::{Auth as SocksAuth, Proxy as SocksProxy};
 use hyper_tls::HttpsConnector;
 use log::{debug, log_enabled, Level::Debug};
-use std::{net::SocketAddr, sync::Arc};
+use std::{net::SocketAddr, pin::Pin, sync::Arc};
 use typed_headers::Credentials as HttpProxyCredentials;
 use url::{percent_encoding::percent_decode, Url};
 
@@ -32,39 +33,35 @@ impl<C> HyperExecutor<C> {
 }
 
 impl<C: Connect + 'static> Executor for HyperExecutor<C> {
-    fn execute(&self, req: Request) -> Box<Future<Item = Vec<u8>, Error = Error> + Send> {
-        let mut builder = match req.method {
-            RequestMethod::Get => HttpRequest::get(req.url),
-            RequestMethod::Post => HttpRequest::post(req.url),
-        };
+    fn execute(&self, req: Request) -> Pin<Box<Future<Output = Result<Vec<u8>, Error>> + Send>> {
         let client = self.client.clone();
-        Box::new(
-            future::result(match req.body {
-                RequestBody::Form(form) => {
-                    MultipartForm::from(form).set_body_convert::<Body, MultipartBody>(&mut builder)
-                }
-                RequestBody::Json(data) => {
-                    if log_enabled!(Debug) {
-                        debug!("Post JSON data: {}", String::from_utf8_lossy(&data));
+        Box::pin(
+            async move {
+                let mut builder = match req.method {
+                    RequestMethod::Get => HttpRequest::get(req.url),
+                    RequestMethod::Post => HttpRequest::post(req.url),
+                };
+                let req = match req.body {
+                    RequestBody::Form(form) => {
+                        MultipartForm::from(form).set_body_convert::<Body, MultipartBody>(&mut builder)
                     }
-                    builder.header("Content-Type", "application/json");
-                    builder.body(data.into())
-                }
-                RequestBody::Empty => builder.body(Body::empty()),
-            })
-            .from_err()
-            .and_then(move |http_req| client.request(http_req).map_err(Error::from))
-            .and_then(|rep| {
-                Stream::fold(rep.into_body().from_err(), Vec::new(), |mut out, chunk| {
-                    out.extend_from_slice(&chunk);
-                    Ok::<_, Error>(out)
-                })
-            })
-            .inspect(|body| {
+                    RequestBody::Json(data) => {
+                        if log_enabled!(Debug) {
+                            debug!("Post JSON data: {}", String::from_utf8_lossy(&data));
+                        }
+                        builder.header("Content-Type", "application/json");
+                        builder.body(data.into())
+                    }
+                    RequestBody::Empty => builder.body(Body::empty()),
+                }?;
+                let resp: Response<Body> = await!(client.request(req).compat())?;
+                let body: Chunk = await!(resp.into_body().concat2().compat())?;
+                let body = body.to_vec();
                 if log_enabled!(Debug) {
                     debug!("Got response: {}", String::from_utf8_lossy(&body));
                 }
-            }),
+                Ok(body)
+            },
         )
     }
 }

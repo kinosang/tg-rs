@@ -1,6 +1,9 @@
+#![feature(async_await, await_macro)]
+
 use dotenv::dotenv;
 use env_logger;
-use futures::Future;
+use failure::Error;
+use futures03::Future;
 use log;
 use std::env;
 use tgbot::{
@@ -21,10 +24,14 @@ impl UpdateHandler for Handler {
             if let Some(text) = message.get_text() {
                 let chat_id = message.get_chat_id();
                 let method = SendMessage::new(chat_id, text.data.clone());
-                self.api.spawn(self.api.execute(method).then(|x| {
-                    log::info!("sendMessage result: {:?}\n", x);
-                    Ok::<(), ()>(())
-                }));
+                let api = self.api.clone();
+                self.api.spawn(
+                    async {
+                        let message = await!(api.execute(method))?;
+                        log::info!("sendMessage result: {:?}\n", message);
+                        Ok::<_, Error>(())
+                    },
+                );
             }
         }
     }
