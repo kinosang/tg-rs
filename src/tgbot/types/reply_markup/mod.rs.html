@@ -31,16 +31,12 @@
 <span id="31">31</span>
 <span id="32">32</span>
 <span id="33">33</span>
-<span id="34">34</span>
-<span id="35">35</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
 
 <span class="kw">mod</span> <span class="ident">force_reply</span>;
 <span class="kw">mod</span> <span class="ident">inline_keyboard</span>;
 <span class="kw">mod</span> <span class="ident">reply_keyboard</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::{<span class="ident">force_reply</span>::<span class="kw-2">*</span>, <span class="ident">inline_keyboard</span>::<span class="kw-2">*</span>, <span class="ident">reply_keyboard</span>::<span class="kw-2">*</span>};
 

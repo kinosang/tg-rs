@@ -31,6 +31,10 @@
 <span id="31">31</span>
 <span id="32">32</span>
 <span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">reply_markup</span>::<span class="ident">InlineKeyboardMarkup</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
@@ -51,7 +55,11 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// * id - Unique identifier for this result, 1-64 bytes</span>
     <span class="doccomment">/// * game_short_name - Short name of the game</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>(<span class="ident">id</span>: <span class="ident">S</span>, <span class="ident">game_short_name</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">id</span>: <span class="ident">I</span>, <span class="ident">game_short_name</span>: <span class="ident">N</span>) <span class="op">-&gt;</span> <span class="self">Self</span>
+    <span class="kw">where</span>
+        <span class="ident">I</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    {
         <span class="ident">InlineQueryResultGame</span> {
             <span class="ident">id</span>: <span class="ident">id</span>.<span class="ident">into</span>(),
             <span class="ident">game_short_name</span>: <span class="ident">game_short_name</span>.<span class="ident">into</span>(),

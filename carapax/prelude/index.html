@@ -50,6 +50,7 @@
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.EncryptedPassportElementUtilityBill.html" title='carapax::prelude::EncryptedPassportElementUtilityBill struct'>EncryptedPassportElementUtilityBill</a></td><td class='docblock-short'><p>Utility bill</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.ExportChatInviteLink.html" title='carapax::prelude::ExportChatInviteLink struct'>ExportChatInviteLink</a></td><td class='docblock-short'><p>Generate a new invite link for a chat</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.File.html" title='carapax::prelude::File struct'>File</a></td><td class='docblock-short'><p>File ready to be downloaded</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.FnHandler.html" title='carapax::prelude::FnHandler struct'>FnHandler</a></td><td class='docblock-short'><p>A function handler</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.ForceReply.html" title='carapax::prelude::ForceReply struct'>ForceReply</a></td><td class='docblock-short'><p>Display a reply interface to the user</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Forward.html" title='carapax::prelude::Forward struct'>Forward</a></td><td class='docblock-short'><p>Contains information about original message</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.ForwardMessage.html" title='carapax::prelude::ForwardMessage struct'>ForwardMessage</a></td><td class='docblock-short'><p>Forward message of any kind</p>
@@ -67,7 +68,6 @@
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.GetUserProfilePhotos.html" title='carapax::prelude::GetUserProfilePhotos struct'>GetUserProfilePhotos</a></td><td class='docblock-short'><p>Get a list of profile pictures for a user</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.GetWebhookInfo.html" title='carapax::prelude::GetWebhookInfo struct'>GetWebhookInfo</a></td><td class='docblock-short'><p>Get current webhook status</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.GroupChat.html" title='carapax::prelude::GroupChat struct'>GroupChat</a></td><td class='docblock-short'><p>Group chat</p>
-</td></tr><tr class='module-item'><td><a class="struct" href="struct.Handler.html" title='carapax::prelude::Handler struct'>Handler</a></td><td class='docblock-short'><p>A regular update handler</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.HandlerFuture.html" title='carapax::prelude::HandlerFuture struct'>HandlerFuture</a></td><td class='docblock-short'><p>A handler future</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.InlineKeyboardButton.html" title='carapax::prelude::InlineKeyboardButton struct'>InlineKeyboardButton</a></td><td class='docblock-short'><p>Button of an inline keyboard</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.InlineKeyboardMarkup.html" title='carapax::prelude::InlineKeyboardMarkup struct'>InlineKeyboardMarkup</a></td><td class='docblock-short'><p>Inline keyboard that appears right next to the message it belongs to</p>
@@ -215,17 +215,11 @@ inline URLs in the media caption.</p>
 </td></tr><tr class='module-item'><td><a class="enum" href="enum.UpdateKind.html" title='carapax::prelude::UpdateKind enum'>UpdateKind</a></td><td class='docblock-short'><p>Kind of update</p>
 </td></tr><tr class='module-item'><td><a class="enum" href="enum.UserId.html" title='carapax::prelude::UserId enum'>UserId</a></td><td class='docblock-short'><p>User ID</p>
 </td></tr></table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
-<table><tr class='module-item'><td><a class="trait" href="trait.CallbackQueryHandler.html" title='carapax::prelude::CallbackQueryHandler trait'>CallbackQueryHandler</a></td><td class='docblock-short'><p>A callback query handler</p>
-</td></tr><tr class='module-item'><td><a class="trait" href="trait.ChosenInlineResultHandler.html" title='carapax::prelude::ChosenInlineResultHandler trait'>ChosenInlineResultHandler</a></td><td class='docblock-short'><p>A chosen inline result handler</p>
-</td></tr><tr class='module-item'><td><a class="trait" href="trait.CommandHandler.html" title='carapax::prelude::CommandHandler trait'>CommandHandler</a></td><td class='docblock-short'><p>Actual command handler</p>
-</td></tr><tr class='module-item'><td><a class="trait" href="trait.InlineQueryHandler.html" title='carapax::prelude::InlineQueryHandler trait'>InlineQueryHandler</a></td><td class='docblock-short'><p>An inline query handler</p>
-</td></tr><tr class='module-item'><td><a class="trait" href="trait.MessageHandler.html" title='carapax::prelude::MessageHandler trait'>MessageHandler</a></td><td class='docblock-short'><p>A regular message handler</p>
+<table><tr class='module-item'><td><a class="trait" href="trait.CommandHandler.html" title='carapax::prelude::CommandHandler trait'>CommandHandler</a></td><td class='docblock-short'><p>Actual command handler</p>
+</td></tr><tr class='module-item'><td><a class="trait" href="trait.FromUpdate.html" title='carapax::prelude::FromUpdate trait'>FromUpdate</a></td><td class='docblock-short'><p>Allows to create an input for a handler from given update</p>
+</td></tr><tr class='module-item'><td><a class="trait" href="trait.Handler.html" title='carapax::prelude::Handler trait'>Handler</a></td><td class='docblock-short'><p>An update handler</p>
 </td></tr><tr class='module-item'><td><a class="trait" href="trait.Method.html" title='carapax::prelude::Method trait'>Method</a></td><td class='docblock-short'><p>Represents an API method</p>
-</td></tr><tr class='module-item'><td><a class="trait" href="trait.PollHandler.html" title='carapax::prelude::PollHandler trait'>PollHandler</a></td><td class='docblock-short'><p>A poll handler</p>
-</td></tr><tr class='module-item'><td><a class="trait" href="trait.PreCheckoutQueryHandler.html" title='carapax::prelude::PreCheckoutQueryHandler trait'>PreCheckoutQueryHandler</a></td><td class='docblock-short'><p>A pre checkout query handler</p>
-</td></tr><tr class='module-item'><td><a class="trait" href="trait.ShippingQueryHandler.html" title='carapax::prelude::ShippingQueryHandler trait'>ShippingQueryHandler</a></td><td class='docblock-short'><p>A shipping query handler</p>
 </td></tr><tr class='module-item'><td><a class="trait" href="trait.TextRule.html" title='carapax::prelude::TextRule trait'>TextRule</a></td><td class='docblock-short'><p>Rule for text handler</p>
-</td></tr><tr class='module-item'><td><a class="trait" href="trait.UpdateHandler.html" title='carapax::prelude::UpdateHandler trait'>UpdateHandler</a></td><td class='docblock-short'><p>A regular update handler</p>
 </td></tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
 <table><tr class='module-item'><td><a class="type" href="type.Float.html" title='carapax::prelude::Float type'>Float</a></td><td class='docblock-short'><p>Telegram Float type</p>
 </td></tr><tr class='module-item'><td><a class="type" href="type.Integer.html" title='carapax::prelude::Integer type'>Integer</a></td><td class='docblock-short'><p>Telegram Integer type</p>

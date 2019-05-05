@@ -105,6 +105,11 @@
 <span id="105">105</span>
 <span id="106">106</span>
 <span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{
     <span class="ident">inline_mode</span>::<span class="ident">message_content</span>::<span class="ident">InputMessageContent</span>,
@@ -149,7 +154,12 @@
     <span class="doccomment">/// * id - Unique identifier for this result, 1-64 bytes</span>
     <span class="doccomment">/// * photo_url - A valid URL of the photo, must be in jpeg format, size must not exceed 5MB</span>
     <span class="doccomment">/// * thumb_url - URL of the thumbnail for the photo</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>(<span class="ident">id</span>: <span class="ident">S</span>, <span class="ident">photo_url</span>: <span class="ident">S</span>, <span class="ident">thumb_url</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">U</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">id</span>: <span class="ident">I</span>, <span class="ident">photo_url</span>: <span class="ident">U</span>, <span class="ident">thumb_url</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="self">Self</span>
+    <span class="kw">where</span>
+        <span class="ident">I</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="ident">U</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    {
         <span class="ident">InlineQueryResultPhoto</span> {
             <span class="ident">id</span>: <span class="ident">id</span>.<span class="ident">into</span>(),
             <span class="ident">photo_url</span>: <span class="ident">photo_url</span>.<span class="ident">into</span>(),
@@ -208,8 +218,8 @@
     }
 
     <span class="doccomment">/// Content of the message to be sent instead of the photo</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">input_message_content</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input_message_content</span>: <span class="ident">InputMessageContent</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">input_message_content</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">input_message_content</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">input_message_content</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">InputMessageContent</span><span class="op">&gt;&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input_message_content</span>: <span class="ident">C</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">input_message_content</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">input_message_content</span>.<span class="ident">into</span>());
         <span class="self">self</span>
     }
 }

@@ -3,12 +3,12 @@
 applications with the Rust programming language. At a high level, it
 provides a few major components:</p>
 <ul>
-<li>A multi threaded, work-stealing based task <a href="../tokio/runtime/index.html" title="runtime">scheduler</a>.</li>
-<li>A <a href="../tokio/reactor/index.html" title="reactor">reactor</a> backed by the operating system's event queue (epoll, kqueue,
+<li>A multi threaded, work-stealing based task [scheduler][runtime].</li>
+<li>A [reactor] backed by the operating system's event queue (epoll, kqueue,
 IOCP, etc...).</li>
-<li>Asynchronous <a href="../tokio/net/index.html" title="net">TCP and UDP</a> sockets.</li>
-<li>Asynchronous <a href="../tokio/fs/index.html" title="fs">filesystem</a> operations.</li>
-<li><a href="../tokio/timer/index.html" title="timer">Timer</a> API for scheduling work in the future.</li>
+<li>Asynchronous [TCP and UDP][net] sockets.</li>
+<li>Asynchronous [filesystem][fs] operations.</li>
+<li>[Timer][timer] API for scheduling work in the future.</li>
 </ul>
 <p>Tokio is built using <a href="http://docs.rs/futures/0.1">futures</a> as the abstraction for managing the
 complexity of asynchronous programming.</p>

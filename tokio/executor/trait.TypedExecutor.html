@@ -6,7 +6,7 @@
 <p>The trait is generic over <code>T</code>: the type of future that can be spawened. This
 is useful for implementing an executor that is only able to spawn a specific
 type of future.</p>
-<p>The <a href="../../tokio/executor/fn.spawn.html" title="`spawn`"><code>spawn</code></a> function is used to submit the future to the executor. Once
+<p>The [<code>spawn</code>] function is used to submit the future to the executor. Once
 submitted, the executor takes ownership of the future and becomes
 responsible for driving the future to completion.</p>
 <p>This trait is useful as a bound for applications and libraries in order to
