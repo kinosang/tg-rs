@@ -177,7 +177,6 @@
 <span id="177">177</span>
 <span id="178">178</span>
 <span id="179">179</span>
-<span id="180">180</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">context</span>::<span class="ident">Context</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">marker</span>::<span class="ident">PhantomData</span>, <span class="ident">ops</span>::<span class="ident">Deref</span>};
@@ -262,8 +261,7 @@
 
 <span class="doccomment">/// A function handler</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Since we can not implement a handler for Fn directly,</span>
-<span class="doccomment">/// we use this struct as a workaround</span>
+<span class="doccomment">/// Since we can not implement `Handler` for Fn directly we use this wrapper as a workaround</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>

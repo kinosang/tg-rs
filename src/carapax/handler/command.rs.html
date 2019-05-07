@@ -211,6 +211,8 @@
 <span id="211">211</span>
 <span id="212">212</span>
 <span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">context</span>::<span class="ident">Context</span>,
@@ -221,8 +223,10 @@
 
 <span class="doccomment">/// A simple commands handler</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Just takes a first command from a message and ignores others.</span>
-<span class="doccomment">/// Assumes that all text after command is arguments.</span>
+<span class="doccomment">/// Takes the first command from a message and ignores others.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Assumes that all text after the command is its arguments.</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Use quotes in order to include spaces in argument: `&#39;hello word&#39;`</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommandsHandler</span> {
@@ -233,7 +237,7 @@
 <span class="kw">type</span> <span class="ident">BoxedCommandHandler</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">CommandHandler</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">HandlerFuture</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">CommandsHandler</span> {
-    <span class="doccomment">/// Add command handler</span>
+    <span class="doccomment">/// Adds a command handler</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Arguments</span>
     <span class="doccomment">///</span>
@@ -249,7 +253,7 @@
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Add a handler to be executed when command not found</span>
+    <span class="doccomment">/// Adds a handler to be executed when the command is not found</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">not_found_handler</span><span class="op">&lt;</span><span class="ident">H</span>, <span class="ident">O</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">H</span>) <span class="op">-&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">H</span>: <span class="ident">CommandHandler</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">O</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
@@ -319,14 +323,14 @@
     }
 }
 
-<span class="doccomment">/// Actual command handler</span>
+<span class="doccomment">/// A command handler trait</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">CommandHandler</span> {
-    <span class="doccomment">/// A result or future to return</span>
+    <span class="doccomment">/// A handler&#39;s output.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [HandlerFuture](struct.HandlerFuture.html) for more information</span>
     <span class="kw">type</span> <span class="ident">Output</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">HandlerFuture</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Handles a command</span>
+    <span class="doccomment">/// Handles the command</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Arguments</span>
     <span class="doccomment">///</span>

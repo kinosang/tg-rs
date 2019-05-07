@@ -360,7 +360,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> <span class="ident">TextHandler</span><span class="op">&lt;</span><span class="ident">TextRuleContains</span>, <span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a handler for messages contains given text</span>
+    <span class="doccomment">/// Create a handler for messages that contain given text</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">text</span>: <span class="ident">S</span>, <span class="ident">handler</span>: <span class="ident">H</span>) <span class="op">-&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
@@ -370,7 +370,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> <span class="ident">TextHandler</span><span class="op">&lt;</span><span class="ident">TextRuleEquals</span>, <span class="ident">H</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a handler for messages equals given text</span>
+    <span class="doccomment">/// Create a handler for messages that equal to given text</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">equals</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">text</span>: <span class="ident">S</span>, <span class="ident">handler</span>: <span class="ident">H</span>) <span class="op">-&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,

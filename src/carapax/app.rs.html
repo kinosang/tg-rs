@@ -86,7 +86,7 @@
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">Future</span>;
 <span class="kw">use</span> <span class="ident">tgbot</span>::{<span class="ident">handle_updates</span>, <span class="ident">Api</span>, <span class="ident">UpdateMethod</span>};
 
-<span class="doccomment">/// A Telegram Bot App</span>
+<span class="doccomment">/// A Telegram Bot application</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">App</span> {
     <span class="ident">handlers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BoxedHandler</span><span class="op">&gt;</span>,
     <span class="ident">error_strategy</span>: <span class="ident">ErrorStrategy</span>,
@@ -99,7 +99,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">App</span> {
-    <span class="doccomment">/// Creates a new app</span>
+    <span class="doccomment">/// Creates a new application</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">App</span> {
             <span class="ident">handlers</span>: <span class="macro">vec</span><span class="macro">!</span>[],
@@ -107,7 +107,7 @@
         }
     }
 
-    <span class="doccomment">/// Set handler error strategy</span>
+    <span class="doccomment">/// Sets an handler error strategy</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [ErrorStrategy](enum.ErrorStrategy.html) for more information.</span>
     <span class="doccomment">/// Default values is `ErrorStrategy::Abort`.</span>
@@ -116,7 +116,7 @@
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Add a handler</span>
+    <span class="doccomment">/// Adds a handler</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// When a handler fails with error, all next handlers will not run.</span>
     <span class="doccomment">/// Use `App::error_strategy()` to change this behaviour.</span>
@@ -130,7 +130,7 @@
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Returns a future that will run app</span>
+    <span class="doccomment">/// Returns a future that will run the app</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="self">self</span>, <span class="ident">api</span>: <span class="ident">Api</span>, <span class="ident">method</span>: <span class="ident">UpdateMethod</span>) <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (), <span class="ident">Error</span> <span class="op">=</span> ()<span class="op">&gt;</span> {
         <span class="ident">handle_updates</span>(<span class="ident">method</span>, <span class="ident">Dispatcher</span>::<span class="ident">new</span>(<span class="ident">api</span>, <span class="self">self</span>.<span class="ident">handlers</span>, <span class="self">self</span>.<span class="ident">error_strategy</span>))
     }

@@ -240,6 +240,9 @@
 <span id="240">240</span>
 <span id="241">241</span>
 <span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">rules</span>::<span class="ident">AccessRule</span>;
 <span class="kw">use</span> <span class="ident">carapax</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
@@ -289,8 +292,11 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Stores all rules in a Vec</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// If there are no rules found for update, is_granted() will return false</span>
-<span class="doccomment">/// You can use `Rule::allow(Principal::All)` as last rule in order to change this behaviour</span>
+<span class="doccomment">/// If there are no rules found for update, [is_granted()] will return false</span>
+<span class="doccomment">/// You can use [allow_all()] as a last rule in order to change this behaviour</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [is_granted()]: trait.AccessPolicy.html#tymethod.is_granted</span>
+<span class="doccomment">/// [allow_all()]: struct.AccessRule.html#method.allow_all</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InMemoryAccessPolicy</span> {
     <span class="ident">rules</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccessRule</span><span class="op">&gt;</span>,

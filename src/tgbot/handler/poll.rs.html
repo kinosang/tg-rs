@@ -198,6 +198,11 @@
 <span id="198">198</span>
 <span id="199">199</span>
 <span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">api</span>::{<span class="ident">Api</span>, <span class="ident">ApiFuture</span>},
@@ -322,15 +327,15 @@
         }
     }
 
-    <span class="doccomment">/// Should retry request when an error has occurred</span>
+    <span class="doccomment">/// Whether or not a request should be retried if it has resolved into an error.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Default value is true</span>
+    <span class="doccomment">/// Default value is `true`</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">should_retry</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">should_retry</span> <span class="op">=</span> <span class="ident">value</span>;
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Set options</span>
+    <span class="doccomment">/// Sets update stream options used in getUpdates method</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">options</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">options</span>: <span class="ident">UpdatesStreamOptions</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">options</span> <span class="op">=</span> <span class="ident">options</span>;
         <span class="self">self</span>
@@ -343,7 +348,9 @@
     }
 }
 
-<span class="doccomment">/// Update stream options</span>
+<span class="doccomment">/// Updates stream options</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// These options are used in getUpdates method</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdatesStreamOptions</span> {
     <span class="ident">offset</span>: <span class="ident">Integer</span>,
@@ -357,16 +364,19 @@
     <span class="doccomment">/// Limits the number of updates to be retrieved</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Values between 1—100 are accepted</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Defaults to 100</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">limit</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">Integer</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">limit</span> <span class="op">=</span> <span class="ident">limit</span>;
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Timeout in seconds for long polling</span>
+    <span class="doccomment">/// Timeout for long polling</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// 0 - usual short polling</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Defaults to 10</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Should be positive, short polling should be used for testing purposes only</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_timeout</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">poll_timeout</span>: <span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">poll_timeout</span> <span class="op">=</span> <span class="ident">poll_timeout</span>;

@@ -83,7 +83,6 @@
 <span id="83">83</span>
 <span id="84">84</span>
 <span id="85">85</span>
-<span id="86">86</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">policy</span>::<span class="ident">AccessPolicy</span>;
 <span class="kw">use</span> <span class="ident">carapax</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
@@ -97,7 +96,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="ident">AccessHandler</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Creates a middleware with specified policy</span>
+    <span class="doccomment">/// Creates a new handler with a specified policy</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">policy</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">AccessHandler</span> { <span class="ident">policy</span> }
     }
@@ -125,7 +124,6 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">policy</span>::{<span class="ident">AccessPolicy</span>, <span class="ident">AccessPolicyFuture</span>};
-    <span class="kw">use</span> <span class="ident">carapax</span>::<span class="ident">Context</span>;
 
     <span class="kw">struct</span> <span class="ident">Policy</span> {
         <span class="ident">flag</span>: <span class="ident">bool</span>,

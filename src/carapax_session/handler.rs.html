@@ -103,6 +103,9 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">session</span>::{<span class="ident">namespace_from_update</span>, <span class="ident">Session</span>},
@@ -117,6 +120,8 @@
 <span class="doccomment">/// so you can use it in your handlers:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
+<span class="doccomment">/// # #[cfg(feature = &quot;redis-store&quot;)]</span>
+<span class="doccomment">/// # mod session_example {</span>
 <span class="doccomment">/// use carapax::prelude::*;</span>
 <span class="doccomment">/// use carapax_session::{store::redis::RedisSessionStore, Session};</span>
 <span class="doccomment">///</span>
@@ -125,6 +130,8 @@
 <span class="doccomment">///     // do something with session...</span>
 <span class="doccomment">///     HandlerResult::Continue.into()</span>
 <span class="doccomment">/// }</span>
+<span class="doccomment">/// # }</span>
+<span class="doccomment">/// # fn main() {}</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionHandler</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="ident">store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>,
@@ -157,7 +164,6 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">SessionKey</span>;
-    <span class="kw">use</span> <span class="ident">carapax</span>::{<span class="ident">core</span>::<span class="ident">types</span>::<span class="ident">Update</span>, <span class="ident">Context</span>};
     <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
     <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">Future</span>;
     <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>, <span class="ident">Serialize</span>};

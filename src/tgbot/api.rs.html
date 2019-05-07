@@ -192,7 +192,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Config</span> {
-    <span class="doccomment">/// Creates a new config with given token</span>
+    <span class="doccomment">/// Creates a new configuration with a given token</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>(<span class="ident">token</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">token</span>: <span class="ident">token</span>.<span class="ident">into</span>(),
@@ -240,7 +240,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Api</span> {
-    <span class="doccomment">/// Creates a new client</span>
+    <span class="doccomment">/// Creates a API instance with a given configuration.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Config</span><span class="op">&gt;&gt;</span>(<span class="ident">config</span>: <span class="ident">C</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">into</span>();
         <span class="prelude-val">Ok</span>(<span class="ident">Api</span> {
@@ -256,7 +256,7 @@
 
     <span class="doccomment">/// Downloads a file</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Use getFile method in order get file_path</span>
+    <span class="doccomment">/// Use getFile method in order to get value for file_path argument</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">download_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file_path</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="ident">ApiFuture</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span> {
         <span class="kw">let</span> <span class="ident">executor</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">executor</span>.<span class="ident">clone</span>();
         <span class="ident">ApiFuture</span> {
