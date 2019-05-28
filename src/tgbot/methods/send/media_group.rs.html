@@ -90,6 +90,7 @@
 <span id="90">90</span>
 <span id="91">91</span>
 <span id="92">92</span>
+<span id="93">93</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">methods</span>::<span class="ident">Method</span>,
@@ -112,7 +113,8 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ChatId</span><span class="op">&gt;&gt;</span>(<span class="ident">chat_id</span>: <span class="ident">C</span>, <span class="ident">media</span>: <span class="ident">MediaGroup</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">form</span> <span class="op">=</span> <span class="ident">Form</span>::<span class="ident">new</span>();
         <span class="ident">form</span>.<span class="ident">insert_field</span>(<span class="string">&quot;chat_id&quot;</span>, <span class="ident">chat_id</span>.<span class="ident">into</span>());
-        <span class="kw">for</span> (<span class="ident">k</span>, <span class="ident">v</span>) <span class="kw">in</span> <span class="ident">media</span>.<span class="ident">into_form</span>()<span class="question-mark">?</span> {
+        <span class="kw">let</span> <span class="ident">media_form</span> <span class="op">=</span> <span class="ident">media</span>.<span class="ident">into_form</span>()<span class="question-mark">?</span>;
+        <span class="kw">for</span> (<span class="ident">k</span>, <span class="ident">v</span>) <span class="kw">in</span> <span class="ident">media_form</span> {
             <span class="ident">form</span>.<span class="ident">insert_field</span>(<span class="ident">k</span>, <span class="ident">v</span>);
         }
         <span class="prelude-val">Ok</span>(<span class="ident">SendMediaGroup</span> { <span class="ident">form</span> })

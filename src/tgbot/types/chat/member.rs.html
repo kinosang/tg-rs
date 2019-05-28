@@ -423,12 +423,12 @@
                 <span class="ident">user</span>: <span class="ident">raw</span>.<span class="ident">user</span>,
                 <span class="ident">can_be_edited</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_be_edited</span>),
                 <span class="ident">can_change_info</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_change_info</span>),
-                <span class="ident">can_post_messages</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_post_messages</span>),
-                <span class="ident">can_edit_messages</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_edit_messages</span>),
+                <span class="ident">can_post_messages</span>: <span class="ident">raw</span>.<span class="ident">can_post_messages</span>,
+                <span class="ident">can_edit_messages</span>: <span class="ident">raw</span>.<span class="ident">can_edit_messages</span>,
                 <span class="ident">can_delete_messages</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_delete_messages</span>),
                 <span class="ident">can_invite_users</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_invite_users</span>),
                 <span class="ident">can_restrict_members</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_restrict_members</span>),
-                <span class="ident">can_pin_messages</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_pin_messages</span>),
+                <span class="ident">can_pin_messages</span>: <span class="ident">raw</span>.<span class="ident">can_pin_messages</span>,
                 <span class="ident">can_promote_members</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_promote_members</span>),
             }),
             <span class="ident">RawChatMemberStatus</span>::<span class="ident">Creator</span> <span class="op">=&gt;</span> <span class="ident">ChatMember</span>::<span class="ident">Creator</span>(<span class="ident">raw</span>.<span class="ident">user</span>),
@@ -464,10 +464,10 @@
     <span class="kw">pub</span> <span class="ident">can_change_info</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// True, if the administrator can post</span>
     <span class="doccomment">/// in the channel, channels only</span>
-    <span class="kw">pub</span> <span class="ident">can_post_messages</span>: <span class="ident">bool</span>,
+    <span class="kw">pub</span> <span class="ident">can_post_messages</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
     <span class="doccomment">/// True, if the administrator can edit messages</span>
     <span class="doccomment">/// of other users and can pin messages, channels only</span>
-    <span class="kw">pub</span> <span class="ident">can_edit_messages</span>: <span class="ident">bool</span>,
+    <span class="kw">pub</span> <span class="ident">can_edit_messages</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
     <span class="doccomment">/// True, if the administrator can delete messages of other users</span>
     <span class="kw">pub</span> <span class="ident">can_delete_messages</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// True, if the administrator can invite new users to the chat</span>
@@ -475,7 +475,7 @@
     <span class="doccomment">/// True, if the administrator can restrict, ban or unban chat members</span>
     <span class="kw">pub</span> <span class="ident">can_restrict_members</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// True, if the administrator can pin messages, supergroups only</span>
-    <span class="kw">pub</span> <span class="ident">can_pin_messages</span>: <span class="ident">bool</span>,
+    <span class="kw">pub</span> <span class="ident">can_pin_messages</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
     <span class="doccomment">/// True, if the administrator can</span>
     <span class="doccomment">/// add new administrators with a subset</span>
     <span class="doccomment">/// of his own privileges or</span>
@@ -558,12 +558,12 @@
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">user</span>.<span class="ident">language_code</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>(), <span class="string">&quot;RU&quot;</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_be_edited</span>, <span class="bool-val">true</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_change_info</span>, <span class="bool-val">false</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_post_messages</span>, <span class="bool-val">true</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_edit_messages</span>, <span class="bool-val">false</span>);
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_post_messages</span>, <span class="prelude-val">Some</span>(<span class="bool-val">true</span>));
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_edit_messages</span>, <span class="prelude-val">Some</span>(<span class="bool-val">false</span>));
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_delete_messages</span>, <span class="bool-val">true</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_invite_users</span>, <span class="bool-val">false</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_restrict_members</span>, <span class="bool-val">true</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_pin_messages</span>, <span class="bool-val">false</span>);
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_pin_messages</span>, <span class="prelude-val">Some</span>(<span class="bool-val">false</span>));
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">admin</span>.<span class="ident">can_promote_members</span>, <span class="bool-val">true</span>);
         } <span class="kw">else</span> {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected chat member: {:?}&quot;</span>, <span class="ident">admin</span>);
