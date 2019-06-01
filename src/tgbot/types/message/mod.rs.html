@@ -570,8 +570,15 @@
 <span id="570">570</span>
 <span id="571">571</span>
 <span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{<span class="ident">chat</span>::<span class="ident">Chat</span>, <span class="ident">message</span>::<span class="ident">raw</span>::<span class="ident">RawMessage</span>, <span class="ident">primitive</span>::<span class="ident">Integer</span>, <span class="ident">user</span>::<span class="ident">User</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{
+    <span class="ident">chat</span>::<span class="ident">Chat</span>, <span class="ident">message</span>::<span class="ident">raw</span>::<span class="ident">RawMessage</span>, <span class="ident">primitive</span>::<span class="ident">Integer</span>, <span class="ident">reply_markup</span>::<span class="ident">InlineKeyboardMarkup</span>, <span class="ident">user</span>::<span class="ident">User</span>,
+};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de</span>::<span class="ident">Error</span>, <span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>};
 
 <span class="kw">mod</span> <span class="ident">data</span>;
@@ -606,6 +613,8 @@
     <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">MessageData</span>,
     <span class="doccomment">/// Contains command data</span>
     <span class="kw">pub</span> <span class="ident">commands</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BotCommand</span><span class="op">&gt;&gt;</span>,
+    <span class="doccomment">/// Inline keyboard attached to the message</span>
+    <span class="kw">pub</span> <span class="ident">reply_markup</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">InlineKeyboardMarkup</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Message</span> {
@@ -776,6 +785,7 @@
                     <span class="ident">media_group_id</span>: <span class="ident">raw</span>.<span class="ident">media_group_id</span>,
                     <span class="ident">data</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>,
                     <span class="ident">commands</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">commands</span>,
+                    <span class="ident">reply_markup</span>: <span class="ident">raw</span>.<span class="ident">reply_markup</span>,
                 });
             };
         };

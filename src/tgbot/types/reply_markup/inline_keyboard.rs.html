@@ -209,12 +209,47 @@
 <span id="209">209</span>
 <span id="210">210</span>
 <span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">login_url</span>::<span class="ident">LoginUrl</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="doccomment">/// Inline keyboard that appears right next to the message it belongs to</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Serialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InlineKeyboardMarkup</span> {
     <span class="ident">inline_keyboard</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">InlineKeyboardButton</span><span class="op">&gt;&gt;</span>,
 }
@@ -241,7 +276,7 @@
 <span class="doccomment">/// Button of an inline keyboard</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// You must use exactly one of the optional fields</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InlineKeyboardButton</span> {
     <span class="ident">text</span>: <span class="ident">String</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
@@ -256,6 +291,8 @@
     <span class="ident">callback_game</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
     <span class="ident">pay</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
+    <span class="ident">login_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">LoginUrl</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">InlineKeyboardButton</span> {
@@ -269,6 +306,7 @@
             <span class="ident">switch_inline_query_current_chat</span>: <span class="prelude-val">None</span>,
             <span class="ident">callback_game</span>: <span class="prelude-val">None</span>,
             <span class="ident">pay</span>: <span class="prelude-val">None</span>,
+            <span class="ident">login_url</span>: <span class="prelude-val">None</span>,
         }
     }
 
@@ -282,6 +320,7 @@
             <span class="ident">switch_inline_query_current_chat</span>: <span class="prelude-val">None</span>,
             <span class="ident">callback_game</span>: <span class="prelude-val">None</span>,
             <span class="ident">pay</span>: <span class="prelude-val">None</span>,
+            <span class="ident">login_url</span>: <span class="prelude-val">None</span>,
         }
     }
 
@@ -297,6 +336,7 @@
             <span class="ident">switch_inline_query_current_chat</span>: <span class="prelude-val">None</span>,
             <span class="ident">callback_game</span>: <span class="prelude-val">None</span>,
             <span class="ident">pay</span>: <span class="prelude-val">None</span>,
+            <span class="ident">login_url</span>: <span class="prelude-val">None</span>,
         })
     }
 
@@ -321,6 +361,7 @@
             <span class="ident">switch_inline_query_current_chat</span>: <span class="prelude-val">None</span>,
             <span class="ident">callback_game</span>: <span class="prelude-val">None</span>,
             <span class="ident">pay</span>: <span class="prelude-val">None</span>,
+            <span class="ident">login_url</span>: <span class="prelude-val">None</span>,
         }
     }
 
@@ -342,6 +383,7 @@
             <span class="ident">switch_inline_query_current_chat</span>: <span class="prelude-val">Some</span>(<span class="ident">switch_inline_query_current_chat</span>.<span class="ident">into</span>()),
             <span class="ident">callback_game</span>: <span class="prelude-val">None</span>,
             <span class="ident">pay</span>: <span class="prelude-val">None</span>,
+            <span class="ident">login_url</span>: <span class="prelude-val">None</span>,
         }
     }
 
@@ -357,6 +399,7 @@
             <span class="ident">switch_inline_query_current_chat</span>: <span class="prelude-val">None</span>,
             <span class="ident">callback_game</span>: <span class="prelude-val">Some</span>(<span class="ident">String</span>::<span class="ident">new</span>()),
             <span class="ident">pay</span>: <span class="prelude-val">None</span>,
+            <span class="ident">login_url</span>: <span class="prelude-val">None</span>,
         }
     }
 
@@ -372,6 +415,29 @@
             <span class="ident">switch_inline_query_current_chat</span>: <span class="prelude-val">None</span>,
             <span class="ident">callback_game</span>: <span class="prelude-val">None</span>,
             <span class="ident">pay</span>: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
+            <span class="ident">login_url</span>: <span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="doccomment">/// An HTTP URL used to automatically authorize the user</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Can be used as a replacement for the [Telegram Login Widget][1]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [1]: https://core.telegram.org/widgets/login</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_login_url</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="ident">text</span>: <span class="ident">T</span>, <span class="ident">login_url</span>: <span class="ident">U</span>) <span class="op">-&gt;</span> <span class="self">Self</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="ident">U</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">LoginUrl</span><span class="op">&gt;</span>,
+    {
+        <span class="ident">InlineKeyboardButton</span> {
+            <span class="ident">text</span>: <span class="ident">text</span>.<span class="ident">into</span>(),
+            <span class="ident">url</span>: <span class="prelude-val">None</span>,
+            <span class="ident">callback_data</span>: <span class="prelude-val">None</span>,
+            <span class="ident">switch_inline_query</span>: <span class="prelude-val">None</span>,
+            <span class="ident">switch_inline_query_current_chat</span>: <span class="prelude-val">None</span>,
+            <span class="ident">callback_game</span>: <span class="prelude-val">None</span>,
+            <span class="ident">pay</span>: <span class="prelude-val">None</span>,
+            <span class="ident">login_url</span>: <span class="prelude-val">Some</span>(<span class="ident">login_url</span>.<span class="ident">into</span>()),
         }
     }
 }
@@ -400,6 +466,7 @@
             <span class="ident">InlineKeyboardButton</span>::<span class="ident">with_switch_inline_query_current_chat</span>(<span class="string">&quot;siqcc&quot;</span>, <span class="string">&quot;siqcc&quot;</span>),
             <span class="ident">InlineKeyboardButton</span>::<span class="ident">with_callback_game</span>(<span class="string">&quot;cg&quot;</span>),
             <span class="ident">InlineKeyboardButton</span>::<span class="ident">with_pay</span>(<span class="string">&quot;pay&quot;</span>),
+            <span class="ident">InlineKeyboardButton</span>::<span class="ident">with_login_url</span>(<span class="string">&quot;login url&quot;</span>, <span class="string">&quot;http://example.com&quot;</span>),
         ]]
         .<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">to_value</span>(<span class="kw-2">&amp;</span><span class="ident">markup</span>).<span class="ident">unwrap</span>();
@@ -414,7 +481,8 @@
                         {<span class="string">&quot;text&quot;</span>:<span class="string">&quot;siq&quot;</span>,<span class="string">&quot;switch_inline_query&quot;</span>:<span class="string">&quot;siq&quot;</span>},
                         {<span class="string">&quot;text&quot;</span>:<span class="string">&quot;siqcc&quot;</span>,<span class="string">&quot;switch_inline_query_current_chat&quot;</span>:<span class="string">&quot;siqcc&quot;</span>},
                         {<span class="string">&quot;text&quot;</span>:<span class="string">&quot;cg&quot;</span>,<span class="string">&quot;callback_game&quot;</span>:<span class="string">&quot;&quot;</span>},
-                        {<span class="string">&quot;text&quot;</span>:<span class="string">&quot;pay&quot;</span>,<span class="string">&quot;pay&quot;</span>:<span class="bool-val">true</span>}
+                        {<span class="string">&quot;text&quot;</span>:<span class="string">&quot;pay&quot;</span>,<span class="string">&quot;pay&quot;</span>:<span class="bool-val">true</span>},
+                        {<span class="string">&quot;text&quot;</span>:<span class="string">&quot;login url&quot;</span>,<span class="string">&quot;login_url&quot;</span>:{<span class="string">&quot;url&quot;</span>:<span class="string">&quot;http://example.com&quot;</span>}}
                     ]
                 ]
             })

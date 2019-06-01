@@ -109,6 +109,8 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{
     <span class="ident">animation</span>::<span class="ident">Animation</span>,
@@ -123,6 +125,7 @@
     <span class="ident">photo_size</span>::<span class="ident">PhotoSize</span>,
     <span class="ident">poll</span>::<span class="ident">Poll</span>,
     <span class="ident">primitive</span>::<span class="ident">Integer</span>,
+    <span class="ident">reply_markup</span>::<span class="ident">InlineKeyboardMarkup</span>,
     <span class="ident">stickers</span>::<span class="ident">Sticker</span>,
     <span class="ident">user</span>::<span class="ident">User</span>,
     <span class="ident">venue</span>::<span class="ident">Venue</span>,
@@ -180,6 +183,7 @@
     <span class="kw">pub</span> <span class="ident">successful_payment</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SuccessfulPayment</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">connected_website</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">passport_data</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PassportData</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">reply_markup</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">InlineKeyboardMarkup</span><span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-trace-core-0.1.0/src/metadata.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>metadata.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../tokio_trace_core/index.html'><img src='../../rust-logo.png' alt='logo' width='100'></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-trace-core-0.2.0/src/metadata.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>metadata.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../tokio_trace_core/index.html'><img src='../../rust-logo.png' alt='logo' width='100'></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -270,6 +270,83 @@
 <span id="270">270</span>
 <span id="271">271</span>
 <span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Metadata describing trace data.</span>
 <span class="kw">use</span> <span class="kw">super</span>::{
@@ -395,7 +472,23 @@
     <span class="doccomment">/// `Metadata::new` constructor instead!</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="kw">pub</span> <span class="ident">fields</span>: <span class="ident">field</span>::<span class="ident">FieldSet</span>,
+
+    <span class="doccomment">/// The kind of the callsite.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **Warning**: The fields on this type are currently `pub` because it must</span>
+    <span class="doccomment">/// be able to be constructed statically by macros. However, when `const</span>
+    <span class="doccomment">/// fn`s are available on stable Rust, this will no longer be necessary.</span>
+    <span class="doccomment">/// Thus, these fields are *not* considered stable public API, and they may</span>
+    <span class="doccomment">/// change warning. Do not rely on any fields on `Metadata`. When</span>
+    <span class="doccomment">/// constructing new `Metadata`, use the `metadata!` macro or the</span>
+    <span class="doccomment">/// `Metadata::new` constructor instead!</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">kind</span>: <span class="ident">Kind</span>,
 }
+
+<span class="doccomment">/// Indicate whether the callsite is a span or event.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Kind</span>(<span class="ident">KindInner</span>);
 
 <span class="doccomment">/// Describes the level of verbosity of a span or event.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Ord</span>, <span class="ident">PartialOrd</span>)]</span>
@@ -415,6 +508,7 @@
         <span class="ident">line</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
         <span class="ident">field_names</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>],
         <span class="ident">callsite</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Callsite</span>,
+        <span class="ident">kind</span>: <span class="ident">Kind</span>,
     ) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">Metadata</span> {
             <span class="ident">name</span>,
@@ -427,6 +521,7 @@
                 <span class="ident">names</span>: <span class="ident">field_names</span>,
                 <span class="ident">callsite</span>: <span class="ident">callsite</span>::<span class="ident">Identifier</span>(<span class="ident">callsite</span>),
             },
+            <span class="ident">kind</span>,
         }
     }
 
@@ -478,19 +573,78 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">callsite</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">callsite</span>::<span class="ident">Identifier</span> {
         <span class="self">self</span>.<span class="ident">fields</span>.<span class="ident">callsite</span>()
     }
+
+    <span class="doccomment">/// Returns true if the callsite kind is `Event`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_event</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">kind</span>.<span class="ident">is_event</span>()
+    }
+
+    <span class="doccomment">/// Return true if the callsite kind is `Span`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_span</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">kind</span>.<span class="ident">is_span</span>()
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Metadata</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Metadata&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>)
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">meta</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Metadata&quot;</span>);
+        <span class="ident">meta</span>.<span class="ident">field</span>(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>)
             .<span class="ident">field</span>(<span class="string">&quot;target&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">target</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;level&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">level</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;module_path&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">module_path</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;file&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">file</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;line&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">line</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;field_names&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fields</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;level&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">level</span>);
+
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">module_path</span>() {
+            <span class="ident">meta</span>.<span class="ident">field</span>(<span class="string">&quot;module_path&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">path</span>);
+        }
+
+        <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">file</span>(), <span class="self">self</span>.<span class="ident">line</span>()) {
+            (<span class="prelude-val">Some</span>(<span class="ident">file</span>), <span class="prelude-val">Some</span>(<span class="ident">line</span>)) <span class="op">=&gt;</span> {
+                <span class="ident">meta</span>.<span class="ident">field</span>(<span class="string">&quot;location&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{}:{}&quot;</span>, <span class="ident">file</span>, <span class="ident">line</span>));
+            }
+            (<span class="prelude-val">Some</span>(<span class="ident">file</span>), <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
+                <span class="ident">meta</span>.<span class="ident">field</span>(<span class="string">&quot;file&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">file</span>));
+            }
+
+            <span class="comment">// Note: a line num with no file is a kind of weird case that _probably_ never occurs...</span>
+            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">line</span>)) <span class="op">=&gt;</span> {
+                <span class="ident">meta</span>.<span class="ident">field</span>(<span class="string">&quot;line&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">line</span>);
+            }
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {}
+        };
+
+        <span class="ident">meta</span>.<span class="ident">field</span>(<span class="string">&quot;fields&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">format_args</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">fields</span>))
+            .<span class="ident">field</span>(<span class="string">&quot;callsite&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">callsite</span>())
+            .<span class="ident">field</span>(<span class="string">&quot;kind&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">kind</span>)
             .<span class="ident">finish</span>()
+    }
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">enum</span> <span class="ident">KindInner</span> {
+    <span class="ident">Event</span>,
+    <span class="ident">Span</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Kind</span> {
+    <span class="doccomment">/// `Event` callsite</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EVENT</span>: <span class="ident">Kind</span> <span class="op">=</span> <span class="ident">Kind</span>(<span class="ident">KindInner</span>::<span class="ident">Event</span>);
+
+    <span class="doccomment">/// `Span` callsite</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SPAN</span>: <span class="ident">Kind</span> <span class="op">=</span> <span class="ident">Kind</span>(<span class="ident">KindInner</span>::<span class="ident">Span</span>);
+
+    <span class="doccomment">/// Return true if the callsite kind is `Span`</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_span</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">Kind</span>(<span class="ident">KindInner</span>::<span class="ident">Span</span>) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>,
+        }
+    }
+
+    <span class="doccomment">/// Return true if the callsite kind is `Event`</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_event</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">Kind</span>(<span class="ident">KindInner</span>::<span class="ident">Event</span>) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>,
+        }
     }
 }
 
