@@ -26,6 +26,10 @@
 <span id="26">26</span>
 <span id="27">27</span>
 <span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Deserialize</span>;
 
@@ -33,10 +37,14 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChatPhoto</span> {
     <span class="doccomment">/// Unique file identifier of small (160x160) chat photo</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// This file_id can be used only for photo download</span>
+    <span class="doccomment">/// and only for as long as the photo is not changed</span>
     <span class="kw">pub</span> <span class="ident">small_file_id</span>: <span class="ident">String</span>,
     <span class="doccomment">/// Unique file identifier of big (640x640) chat photo</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// This file_id can be used only for photo download</span>
+    <span class="doccomment">/// and only for as long as the photo is not changed</span>
     <span class="kw">pub</span> <span class="ident">big_file_id</span>: <span class="ident">String</span>,
 }
 

@@ -191,11 +191,32 @@
 <span id="191">191</span>
 <span id="192">192</span>
 <span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">methods</span>::<span class="ident">Method</span>,
     <span class="ident">request</span>::<span class="ident">RequestBuilder</span>,
-    <span class="ident">types</span>::{<span class="ident">ChatId</span>, <span class="ident">Integer</span>},
+    <span class="ident">types</span>::{<span class="ident">ChatId</span>, <span class="ident">ChatPermissions</span>, <span class="ident">Integer</span>},
 };
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
@@ -210,16 +231,9 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RestrictChatMember</span> {
     <span class="ident">chat_id</span>: <span class="ident">ChatId</span>,
     <span class="ident">user_id</span>: <span class="ident">Integer</span>,
+    <span class="ident">permissions</span>: <span class="ident">ChatPermissions</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
     <span class="ident">until_date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Integer</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-    <span class="ident">can_send_messages</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-    <span class="ident">can_send_media_messages</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-    <span class="ident">can_send_other_messages</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
-    <span class="ident">can_add_web_page_previews</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">RestrictChatMember</span> {
@@ -233,29 +247,26 @@
         <span class="ident">RestrictChatMember</span> {
             <span class="ident">chat_id</span>: <span class="ident">chat_id</span>.<span class="ident">into</span>(),
             <span class="ident">user_id</span>,
+            <span class="ident">permissions</span>: <span class="ident">ChatPermissions</span>::<span class="ident">default</span>(),
             <span class="ident">until_date</span>: <span class="prelude-val">None</span>,
-            <span class="ident">can_send_messages</span>: <span class="prelude-val">None</span>,
-            <span class="ident">can_send_media_messages</span>: <span class="prelude-val">None</span>,
-            <span class="ident">can_send_other_messages</span>: <span class="prelude-val">None</span>,
-            <span class="ident">can_add_web_page_previews</span>: <span class="prelude-val">None</span>,
         }
+    }
+
+    <span class="doccomment">/// Replace current permissions with the new one</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_permissions</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">permissions</span>: <span class="ident">ChatPermissions</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">permissions</span> <span class="op">=</span> <span class="ident">permissions</span>;
+        <span class="self">self</span>
     }
 
     <span class="doccomment">/// Restrict everything</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">restrict_all</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">can_send_messages</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="bool-val">false</span>);
-        <span class="self">self</span>.<span class="ident">can_send_media_messages</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="bool-val">false</span>);
-        <span class="self">self</span>.<span class="ident">can_send_other_messages</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="bool-val">false</span>);
-        <span class="self">self</span>.<span class="ident">can_add_web_page_previews</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="bool-val">false</span>);
+        <span class="self">self</span>.<span class="ident">permissions</span> <span class="op">=</span> <span class="ident">ChatPermissions</span>::<span class="ident">restricted</span>();
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Allow everything</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allow_all</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">can_send_messages</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="bool-val">true</span>);
-        <span class="self">self</span>.<span class="ident">can_send_media_messages</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="bool-val">true</span>);
-        <span class="self">self</span>.<span class="ident">can_send_other_messages</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="bool-val">true</span>);
-        <span class="self">self</span>.<span class="ident">can_add_web_page_previews</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="bool-val">true</span>);
+        <span class="self">self</span>.<span class="ident">permissions</span> <span class="op">=</span> <span class="ident">ChatPermissions</span>::<span class="ident">allowed</span>();
         <span class="self">self</span>
     }
 
@@ -269,29 +280,37 @@
     }
 
     <span class="doccomment">/// Pass True, if the user can send text messages, contacts, locations and venues</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Deprecated, to be removed in tgbot 0.5.0. Use with_permissions() instead.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">can_send_messages</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">can_send_messages</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">can_send_messages</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">can_send_messages</span>);
+        <span class="self">self</span>.<span class="ident">permissions</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">permissions</span>.<span class="ident">with_send_messages</span>(<span class="ident">can_send_messages</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Pass True, if the user can send audios, documents, photos,</span>
     <span class="doccomment">/// videos, video notes and voice notes, implies can_send_messages</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Deprecated, to be removed in tgbot 0.5.0. Use with_permissions() instead.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">can_send_media_messages</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">can_send_media_messages</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">can_send_media_messages</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">can_send_media_messages</span>);
+        <span class="self">self</span>.<span class="ident">permissions</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">permissions</span>.<span class="ident">with_send_media_messages</span>(<span class="ident">can_send_media_messages</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Pass True, if the user can send animations, games, stickers and</span>
     <span class="doccomment">/// use inline bots, implies can_send_media_messages</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Deprecated, to be removed in tgbot 0.5.0. Use with_permissions() instead.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">can_send_other_messages</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">can_send_other_messages</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">can_send_other_messages</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">can_send_other_messages</span>);
+        <span class="self">self</span>.<span class="ident">permissions</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">permissions</span>.<span class="ident">with_send_other_messages</span>(<span class="ident">can_send_other_messages</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Pass True, if the user may add web page previews to their messages,</span>
     <span class="doccomment">/// implies can_send_media_messages</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Deprecated, to be removed in tgbot 0.5.0. Use with_permissions() instead.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">can_add_web_page_previews</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">can_add_web_page_previews</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">can_add_web_page_previews</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">can_add_web_page_previews</span>);
+        <span class="self">self</span>.<span class="ident">permissions</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">permissions</span>.<span class="ident">with_add_web_page_previews</span>(<span class="ident">can_add_web_page_previews</span>);
         <span class="self">self</span>
     }
 }
@@ -325,10 +344,19 @@
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;chat_id&quot;</span>], <span class="number">1</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;user_id&quot;</span>], <span class="number">2</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;until_date&quot;</span>], <span class="number">100</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_send_messages&quot;</span>], <span class="bool-val">false</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_send_media_messages&quot;</span>], <span class="bool-val">false</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_send_other_messages&quot;</span>], <span class="bool-val">false</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_add_web_page_previews&quot;</span>], <span class="bool-val">false</span>);
+            <span class="macro">assert_eq</span><span class="macro">!</span>(
+                <span class="ident">data</span>[<span class="string">&quot;permissions&quot;</span>],
+                <span class="ident">serde_json</span>::<span class="macro">json</span><span class="macro">!</span>({
+                    <span class="string">&quot;can_send_messages&quot;</span>: <span class="bool-val">false</span>,
+                    <span class="string">&quot;can_send_media_messages&quot;</span>: <span class="bool-val">false</span>,
+                    <span class="string">&quot;can_send_polls&quot;</span>: <span class="bool-val">false</span>,
+                    <span class="string">&quot;can_send_other_messages&quot;</span>: <span class="bool-val">false</span>,
+                    <span class="string">&quot;can_add_web_page_previews&quot;</span>: <span class="bool-val">false</span>,
+                    <span class="string">&quot;can_change_info&quot;</span>: <span class="bool-val">false</span>,
+                    <span class="string">&quot;can_invite_users&quot;</span>: <span class="bool-val">false</span>,
+                    <span class="string">&quot;can_pin_messages&quot;</span>: <span class="bool-val">false</span>,
+                })
+            );
         } <span class="kw">else</span> {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected request body: {:?}&quot;</span>, <span class="ident">request</span>.<span class="ident">body</span>);
         }
@@ -349,10 +377,19 @@
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;chat_id&quot;</span>], <span class="number">1</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;user_id&quot;</span>], <span class="number">2</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;until_date&quot;</span>], <span class="number">100</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_send_messages&quot;</span>], <span class="bool-val">true</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_send_media_messages&quot;</span>], <span class="bool-val">true</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_send_other_messages&quot;</span>], <span class="bool-val">true</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_add_web_page_previews&quot;</span>], <span class="bool-val">true</span>);
+            <span class="macro">assert_eq</span><span class="macro">!</span>(
+                <span class="ident">data</span>[<span class="string">&quot;permissions&quot;</span>],
+                <span class="ident">serde_json</span>::<span class="macro">json</span><span class="macro">!</span>({
+                    <span class="string">&quot;can_send_messages&quot;</span>: <span class="bool-val">true</span>,
+                    <span class="string">&quot;can_send_media_messages&quot;</span>: <span class="bool-val">true</span>,
+                    <span class="string">&quot;can_send_polls&quot;</span>: <span class="bool-val">true</span>,
+                    <span class="string">&quot;can_send_other_messages&quot;</span>: <span class="bool-val">true</span>,
+                    <span class="string">&quot;can_add_web_page_previews&quot;</span>: <span class="bool-val">true</span>,
+                    <span class="string">&quot;can_change_info&quot;</span>: <span class="bool-val">true</span>,
+                    <span class="string">&quot;can_invite_users&quot;</span>: <span class="bool-val">true</span>,
+                    <span class="string">&quot;can_pin_messages&quot;</span>: <span class="bool-val">true</span>,
+                })
+            );
         } <span class="kw">else</span> {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected request body: {:?}&quot;</span>, <span class="ident">request</span>.<span class="ident">body</span>);
         }
@@ -376,10 +413,15 @@
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;chat_id&quot;</span>], <span class="number">1</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;user_id&quot;</span>], <span class="number">2</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;until_date&quot;</span>], <span class="number">100</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_send_messages&quot;</span>], <span class="bool-val">true</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_send_media_messages&quot;</span>], <span class="bool-val">false</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_send_other_messages&quot;</span>], <span class="bool-val">true</span>);
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>[<span class="string">&quot;can_add_web_page_previews&quot;</span>], <span class="bool-val">false</span>);
+            <span class="macro">assert_eq</span><span class="macro">!</span>(
+                <span class="ident">data</span>[<span class="string">&quot;permissions&quot;</span>],
+                <span class="ident">serde_json</span>::<span class="macro">json</span><span class="macro">!</span>({
+                    <span class="string">&quot;can_send_messages&quot;</span>: <span class="bool-val">true</span>,
+                    <span class="string">&quot;can_send_media_messages&quot;</span>: <span class="bool-val">false</span>,
+                    <span class="string">&quot;can_send_other_messages&quot;</span>: <span class="bool-val">true</span>,
+                    <span class="string">&quot;can_add_web_page_previews&quot;</span>: <span class="bool-val">false</span>
+                })
+            );
         } <span class="kw">else</span> {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected request body: {:?}&quot;</span>, <span class="ident">request</span>.<span class="ident">body</span>);
         }

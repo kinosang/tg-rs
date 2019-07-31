@@ -105,7 +105,6 @@ ALIASES["shellwords"] = {};
 ALIASES["slab"] = {};
 ALIASES["smallvec"] = {};
 ALIASES["socks"] = {};
-ALIASES["spin"] = {};
 ALIASES["stable_deref_trait"] = {};
 ALIASES["string"] = {};
 ALIASES["syn"] = {};

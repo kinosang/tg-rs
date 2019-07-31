@@ -561,6 +561,44 @@
 <span id="561">561</span>
 <span id="562">562</span>
 <span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{
     <span class="ident">chat</span>::<span class="ident">raw</span>::{<span class="ident">RawChat</span>, <span class="ident">RawChatKind</span>},
@@ -570,11 +608,13 @@
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">de</span>::<span class="ident">Error</span>, <span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
 
 <span class="kw">mod</span> <span class="ident">member</span>;
+<span class="kw">mod</span> <span class="ident">permissions</span>;
 <span class="kw">mod</span> <span class="ident">photo</span>;
 <span class="kw">mod</span> <span class="ident">raw</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::{
     <span class="ident">member</span>::{<span class="ident">ChatMember</span>, <span class="ident">ChatMemberAdministrator</span>, <span class="ident">ChatMemberKicked</span>, <span class="ident">ChatMemberRestricted</span>},
+    <span class="ident">permissions</span>::<span class="ident">ChatPermissions</span>,
     <span class="ident">photo</span>::<span class="ident">ChatPhoto</span>,
 };
 
@@ -622,6 +662,7 @@
                 <span class="ident">photo</span>: <span class="ident">raw_chat</span>.<span class="ident">photo</span>,
                 <span class="ident">pinned_message</span>: <span class="ident">raw_chat</span>.<span class="ident">pinned_message</span>,
                 <span class="ident">invite_link</span>: <span class="ident">raw_chat</span>.<span class="ident">invite_link</span>,
+                <span class="ident">permissions</span>: <span class="ident">raw_chat</span>.<span class="ident">permissions</span>,
             }),
             <span class="ident">RawChatKind</span>::<span class="ident">Private</span> <span class="op">=&gt;</span> <span class="ident">Chat</span>::<span class="ident">Private</span>(<span class="ident">PrivateChat</span> {
                 <span class="ident">id</span>: <span class="ident">raw_chat</span>.<span class="ident">id</span>,
@@ -640,6 +681,7 @@
                 <span class="ident">invite_link</span>: <span class="ident">raw_chat</span>.<span class="ident">invite_link</span>,
                 <span class="ident">sticker_set_name</span>: <span class="ident">raw_chat</span>.<span class="ident">sticker_set_name</span>,
                 <span class="ident">can_set_sticker_set</span>: <span class="ident">raw_chat</span>.<span class="ident">can_set_sticker_set</span>,
+                <span class="ident">permissions</span>: <span class="ident">raw_chat</span>.<span class="ident">permissions</span>,
             }),
         })
     }
@@ -655,15 +697,19 @@
     <span class="doccomment">/// Username of a channel</span>
     <span class="kw">pub</span> <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Chat photo</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">photo</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChatPhoto</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Description of a channel</span>
-    <span class="doccomment">/// Returned only in getChat.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">description</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Invite link</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">invite_link</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Pinned message</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">pinned_message</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;&gt;</span>,
 }
@@ -676,16 +722,25 @@
     <span class="doccomment">/// Title</span>
     <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
     <span class="doccomment">/// True if a group has ‘All Members Are Admins’ enabled</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The field is still returned in the object for backward compatibility,</span>
+    <span class="doccomment">/// but new bots should use the permissions field instead</span>
     <span class="kw">pub</span> <span class="ident">all_members_are_administrators</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Chat photo</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">photo</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChatPhoto</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Invite link</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">invite_link</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Pinned message</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">pinned_message</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;&gt;</span>,
+    <span class="doccomment">/// Default chat member permissions, for groups and supergroups</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returned only in getChat</span>
+    <span class="kw">pub</span> <span class="ident">permissions</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChatPermissions</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Private chat</span>
@@ -700,6 +755,7 @@
     <span class="doccomment">/// Username of a chat</span>
     <span class="kw">pub</span> <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Chat photo</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">photo</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChatPhoto</span><span class="op">&gt;</span>,
 }
@@ -714,23 +770,33 @@
     <span class="doccomment">/// Username of a supergroup</span>
     <span class="kw">pub</span> <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Photo of a supergroup</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">photo</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChatPhoto</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Description of a supergroup</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">description</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Invite link</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">invite_link</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Pinned message</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">pinned_message</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;&gt;</span>,
     <span class="doccomment">/// For supergroups, name of group sticker set</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">sticker_set_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// True, if the bot can change the group sticker set</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Returned only in getChat</span>
     <span class="kw">pub</span> <span class="ident">can_set_sticker_set</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Default chat member permissions, for groups and supergroups</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returned only in getChat</span>
+    <span class="kw">pub</span> <span class="ident">permissions</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ChatPermissions</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Chat ID or username</span>
@@ -905,7 +971,8 @@
                     <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;user&quot;</span>
                 },
                 <span class="string">&quot;text&quot;</span>: <span class="string">&quot;test&quot;</span>
-            }
+            },
+            <span class="string">&quot;permissions&quot;</span>: {<span class="string">&quot;can_send_messages&quot;</span>: <span class="bool-val">true</span>}
         }))
         .<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Chat</span>::<span class="ident">Group</span>(<span class="ident">chat</span>) <span class="op">=</span> <span class="ident">chat</span> {
@@ -916,6 +983,8 @@
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">photo</span>.<span class="ident">small_file_id</span>, <span class="string">&quot;smallfileid&quot;</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">photo</span>.<span class="ident">big_file_id</span>, <span class="string">&quot;bigfileid&quot;</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">invite_link</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;groupinvitelink&quot;</span>);
+            <span class="kw">let</span> <span class="ident">permissions</span> <span class="op">=</span> <span class="ident">chat</span>.<span class="ident">permissions</span>.<span class="ident">unwrap</span>();
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">permissions</span>.<span class="ident">can_send_messages</span>.<span class="ident">unwrap</span>());
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">pinned_message</span>.<span class="ident">is_some</span>());
         } <span class="kw">else</span> {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected chat: {:?}&quot;</span>, <span class="ident">chat</span>);
@@ -935,6 +1004,7 @@
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">photo</span>.<span class="ident">is_none</span>());
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">invite_link</span>.<span class="ident">is_none</span>());
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">pinned_message</span>.<span class="ident">is_none</span>());
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">permissions</span>.<span class="ident">is_none</span>());
         } <span class="kw">else</span> {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected chat: {:?}&quot;</span>, <span class="ident">chat</span>);
         }
@@ -998,6 +1068,9 @@
             <span class="string">&quot;invite_link&quot;</span>: <span class="string">&quot;supergroupinvitelink&quot;</span>,
             <span class="string">&quot;sticker_set_name&quot;</span>: <span class="string">&quot;supergroupstickersetname&quot;</span>,
             <span class="string">&quot;can_set_sticker_set&quot;</span>: <span class="bool-val">true</span>,
+            <span class="string">&quot;permissions&quot;</span>: {
+                <span class="string">&quot;can_send_messages&quot;</span>: <span class="bool-val">true</span>
+            },
             <span class="string">&quot;pinned_message&quot;</span>: {
                 <span class="string">&quot;message_id&quot;</span>: <span class="number">1</span>,
                 <span class="string">&quot;date&quot;</span>: <span class="number">0</span>,
@@ -1028,6 +1101,8 @@
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">sticker_set_name</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;supergroupstickersetname&quot;</span>);
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">can_set_sticker_set</span>.<span class="ident">unwrap</span>());
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">pinned_message</span>.<span class="ident">is_some</span>());
+            <span class="kw">let</span> <span class="ident">permissions</span> <span class="op">=</span> <span class="ident">chat</span>.<span class="ident">permissions</span>.<span class="ident">unwrap</span>();
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">permissions</span>.<span class="ident">can_send_messages</span>.<span class="ident">unwrap</span>());
         } <span class="kw">else</span> {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected chat: {:?}&quot;</span>, <span class="ident">chat</span>)
         }
@@ -1049,6 +1124,7 @@
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">sticker_set_name</span>.<span class="ident">is_none</span>());
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">can_set_sticker_set</span>.<span class="ident">is_none</span>());
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">pinned_message</span>.<span class="ident">is_none</span>());
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">chat</span>.<span class="ident">permissions</span>.<span class="ident">is_none</span>());
         } <span class="kw">else</span> {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected chat: {:?}&quot;</span>, <span class="ident">chat</span>)
         }

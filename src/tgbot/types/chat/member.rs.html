@@ -354,6 +354,27 @@
 <span id="354">354</span>
 <span id="355">355</span>
 <span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{
     <span class="ident">chat</span>::<span class="ident">raw</span>::{<span class="ident">RawChatMember</span>, <span class="ident">RawChatMemberStatus</span>},
@@ -441,7 +462,11 @@
             <span class="ident">RawChatMemberStatus</span>::<span class="ident">Restricted</span> <span class="op">=&gt;</span> <span class="ident">ChatMember</span>::<span class="ident">Restricted</span>(<span class="ident">ChatMemberRestricted</span> {
                 <span class="ident">user</span>: <span class="ident">raw</span>.<span class="ident">user</span>,
                 <span class="ident">until_date</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">until_date</span>),
+                <span class="ident">can_change_info</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_change_info</span>),
+                <span class="ident">can_invite_users</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_invite_users</span>),
+                <span class="ident">can_pin_messages</span>: <span class="ident">raw</span>.<span class="ident">can_pin_messages</span>,
                 <span class="ident">can_send_messages</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_send_messages</span>),
+                <span class="ident">can_send_polls</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_send_polls</span>),
                 <span class="ident">can_send_media_messages</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_send_media_messages</span>),
                 <span class="ident">can_send_other_messages</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_send_other_messages</span>),
                 <span class="ident">can_add_web_page_previews</span>: <span class="macro">required</span><span class="macro">!</span>(<span class="ident">can_add_web_page_previews</span>),
@@ -474,7 +499,7 @@
     <span class="kw">pub</span> <span class="ident">can_invite_users</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// True, if the administrator can restrict, ban or unban chat members</span>
     <span class="kw">pub</span> <span class="ident">can_restrict_members</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// True, if the administrator can pin messages, supergroups only</span>
+    <span class="doccomment">/// True, if the administrator can pin messages, groups and supergroups only</span>
     <span class="kw">pub</span> <span class="ident">can_pin_messages</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
     <span class="doccomment">/// True, if the administrator can</span>
     <span class="doccomment">/// add new administrators with a subset</span>
@@ -501,9 +526,18 @@
     <span class="kw">pub</span> <span class="ident">user</span>: <span class="ident">User</span>,
     <span class="doccomment">/// Date when restrictions will be lifted for this user, unix time</span>
     <span class="kw">pub</span> <span class="ident">until_date</span>: <span class="ident">Integer</span>,
+    <span class="doccomment">/// True, if the user allowed to change</span>
+    <span class="doccomment">/// the chat title, photo and other settings</span>
+    <span class="kw">pub</span> <span class="ident">can_change_info</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// True, if the user allowed to invite new users to the chat</span>
+    <span class="kw">pub</span> <span class="ident">can_invite_users</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// True, if the user allowed to pin messages, groups and supergroups only</span>
+    <span class="kw">pub</span> <span class="ident">can_pin_messages</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
     <span class="doccomment">/// True, if the user can send</span>
     <span class="doccomment">/// text messages, contacts, locations and venues</span>
     <span class="kw">pub</span> <span class="ident">can_send_messages</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// True, if the user is allowed to send polls</span>
+    <span class="kw">pub</span> <span class="ident">can_send_polls</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// True, if the user can send</span>
     <span class="doccomment">/// audios, documents, photos, videos,</span>
     <span class="doccomment">/// video notes and voice notes, implies can_send_messages</span>
@@ -684,6 +718,10 @@
                 <span class="string">&quot;first_name&quot;</span>: <span class="string">&quot;firstname&quot;</span>
             },
             <span class="string">&quot;until_date&quot;</span>: <span class="number">0</span>,
+            <span class="string">&quot;can_change_info&quot;</span>: <span class="bool-val">true</span>,
+            <span class="string">&quot;can_invite_users&quot;</span>: <span class="bool-val">false</span>,
+            <span class="string">&quot;can_send_polls&quot;</span>: <span class="bool-val">true</span>,
+            <span class="string">&quot;can_pin_messages&quot;</span>: <span class="bool-val">false</span>,
             <span class="string">&quot;can_send_messages&quot;</span>: <span class="bool-val">true</span>,
             <span class="string">&quot;can_send_media_messages&quot;</span>: <span class="bool-val">false</span>,
             <span class="string">&quot;can_send_other_messages&quot;</span>: <span class="bool-val">true</span>,
@@ -701,6 +739,10 @@
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">restricted</span>.<span class="ident">user</span>.<span class="ident">username</span>.<span class="ident">is_none</span>());
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">restricted</span>.<span class="ident">user</span>.<span class="ident">language_code</span>.<span class="ident">is_none</span>());
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">restricted</span>.<span class="ident">until_date</span>, <span class="number">0</span>);
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">restricted</span>.<span class="ident">can_change_info</span>);
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">restricted</span>.<span class="ident">can_invite_users</span>);
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">restricted</span>.<span class="ident">can_send_polls</span>);
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">restricted</span>.<span class="ident">can_pin_messages</span>.<span class="ident">unwrap</span>());
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">restricted</span>.<span class="ident">can_send_messages</span>);
             <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">restricted</span>.<span class="ident">can_send_media_messages</span>);
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">restricted</span>.<span class="ident">can_send_other_messages</span>);

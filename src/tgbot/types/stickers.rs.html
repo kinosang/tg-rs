@@ -191,6 +191,16 @@
 <span id="191">191</span>
 <span id="192">192</span>
 <span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{
     <span class="ident">photo_size</span>::<span class="ident">PhotoSize</span>,
@@ -258,6 +268,8 @@
     <span class="kw">pub</span> <span class="ident">mask_position</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MaskPosition</span><span class="op">&gt;</span>,
     <span class="doccomment">/// File size</span>
     <span class="kw">pub</span> <span class="ident">file_size</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Integer</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// True, if the sticker is animated</span>
+    <span class="kw">pub</span> <span class="ident">is_animated</span>: <span class="ident">bool</span>,
 }
 
 <span class="doccomment">/// Sticker set</span>
@@ -271,6 +283,8 @@
     <span class="kw">pub</span> <span class="ident">contains_masks</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// List of all set stickers</span>
     <span class="kw">pub</span> <span class="ident">stickers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Sticker</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// True, if the sticker set contains animated stickers</span>
+    <span class="kw">pub</span> <span class="ident">is_animated</span>: <span class="ident">bool</span>,
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -298,13 +312,15 @@
                 <span class="string">&quot;y_shift&quot;</span>: <span class="number">2.0</span>,
                 <span class="string">&quot;scale&quot;</span>: <span class="number">3.0</span>,
             },
-            <span class="string">&quot;file_size&quot;</span>: <span class="number">1234</span>
+            <span class="string">&quot;file_size&quot;</span>: <span class="number">1234</span>,
+            <span class="string">&quot;is_animated&quot;</span>: <span class="bool-val">false</span>
         }))
         .<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">file_id</span>, <span class="string">&quot;test file id&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">width</span>, <span class="number">512</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">height</span>, <span class="number">512</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">data</span>.<span class="ident">is_animated</span>);
 
         <span class="kw">let</span> <span class="ident">thumb</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">thumb</span>.<span class="ident">unwrap</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">thumb</span>.<span class="ident">file_id</span>, <span class="string">&quot;AdddddUuUUUUccccUUmm_PPP&quot;</span>);
@@ -329,13 +345,15 @@
         <span class="kw">let</span> <span class="ident">data</span>: <span class="ident">Sticker</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_value</span>(<span class="ident">serde_json</span>::<span class="macro">json</span><span class="macro">!</span>({
             <span class="string">&quot;file_id&quot;</span>: <span class="string">&quot;test file id&quot;</span>,
             <span class="string">&quot;width&quot;</span>: <span class="number">512</span>,
-            <span class="string">&quot;height&quot;</span>: <span class="number">512</span>
+            <span class="string">&quot;height&quot;</span>: <span class="number">512</span>,
+            <span class="string">&quot;is_animated&quot;</span>: <span class="bool-val">true</span>
         }))
         .<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">file_id</span>, <span class="string">&quot;test file id&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">width</span>, <span class="number">512</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">height</span>, <span class="number">512</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">is_animated</span>);
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">thumb</span>.<span class="ident">is_none</span>());
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">emoji</span>.<span class="ident">is_none</span>());
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">set_name</span>.<span class="ident">is_none</span>());
@@ -376,11 +394,13 @@
             <span class="string">&quot;name&quot;</span>: <span class="string">&quot;test&quot;</span>,
             <span class="string">&quot;title&quot;</span>: <span class="string">&quot;test&quot;</span>,
             <span class="string">&quot;contains_masks&quot;</span>: <span class="bool-val">false</span>,
-            <span class="string">&quot;stickers&quot;</span>: []
+            <span class="string">&quot;stickers&quot;</span>: [],
+            <span class="string">&quot;is_animated&quot;</span>: <span class="bool-val">false</span>
         }))
         .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">name</span>, <span class="string">&quot;test&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">title</span>, <span class="string">&quot;test&quot;</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">data</span>.<span class="ident">is_animated</span>);
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">data</span>.<span class="ident">contains_masks</span>);
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">data</span>.<span class="ident">stickers</span>.<span class="ident">is_empty</span>());
     }
