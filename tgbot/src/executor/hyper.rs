@@ -11,7 +11,10 @@ use hyper::{
 use hyper_multipart_rfc7578::client::multipart::{Body as MultipartBody, Form as MultipartForm};
 use hyper_proxy::{Intercept as HttpProxyIntercept, Proxy as HttpProxy, ProxyConnector as HttpProxyConnector};
 use hyper_socks2::{Auth as SocksAuth, Proxy as SocksProxy};
+#[cfg(feature = "tls")]
 use hyper_tls::HttpsConnector;
+#[cfg(feature = "rustls")]
+use hyper_rustls::HttpsConnector;
 use log::{debug, log_enabled, Level::Debug};
 use std::{net::SocketAddr, sync::Arc};
 use typed_headers::Credentials as HttpProxyCredentials;
@@ -69,8 +72,14 @@ impl<C: Connect + 'static> Executor for HyperExecutor<C> {
     }
 }
 
+#[cfg(feature = "tls")]
 fn https_connector() -> Result<HttpsConnector<HttpConnector>, Error> {
     Ok(HttpsConnector::new(DEFAULT_HTTPS_DNS_WORKER_THREADS)?)
+}
+
+#[cfg(feature = "rustls")]
+fn https_connector() -> Result<HttpsConnector<HttpConnector>, Error> {
+    Ok(HttpsConnector::new(DEFAULT_HTTPS_DNS_WORKER_THREADS))
 }
 
 pub(crate) fn default_executor() -> Result<Box<dyn Executor>, Error> {
